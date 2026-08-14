@@ -1,0 +1,12 @@
+# Gitleaks config for oh-my-pi-dotfiles
+title = "oh-my-pi-dotfiles"
+
+[allowlist]
+description = "Placeholder auth example and docs"
+paths = [
+  '''auth/auth\.json\.example$''',
+  '''README\.md$''',
+]
+regexes = [
+  '''REPLACE_ME''',
+]

@@ -1,0 +1,76 @@
+providers:
+  kie:
+    authHeader: true
+    apiKey: "!jq -r '.kie.key' $HOME/.omp/agent/auth.json"
+    baseUrl: https://api.kie.ai/codex/v1
+    models:
+      - id: gpt-5-6-sol
+        name: GPT-5.6 Sol (Kie.ai)
+        api: openai-responses
+        baseUrl: https://api.kie.ai/codex/v1
+        reasoning: true
+        input: [text, image]
+        cost: { input: 5, output: 30, cacheRead: 0.5, cacheWrite: 6.25 }
+        compat:
+          supportsDeveloperRole: false
+        contextWindow: 1050000
+        maxTokens: 128000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, xhigh, max]
+      - id: gpt-5-6-terra
+        name: GPT-5.6 Terra (Kie.ai)
+        api: openai-responses
+        baseUrl: https://api.kie.ai/codex/v1
+        reasoning: true
+        input: [text, image]
+        cost: { input: 2.5, output: 15, cacheRead: 0.25, cacheWrite: 3.125 }
+        compat:
+          supportsDeveloperRole: false
+        contextWindow: 1050000
+        maxTokens: 128000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, xhigh, max]
+      - id: gpt-5-6-luna
+        name: GPT-5.6 Luna (Kie.ai)
+        api: openai-responses
+        baseUrl: https://api.kie.ai/codex/v1
+        reasoning: true
+        input: [text, image]
+        cost: { input: 1, output: 6, cacheRead: 0.1, cacheWrite: 1.25 }
+        compat:
+          supportsDeveloperRole: false
+        contextWindow: 1050000
+        maxTokens: 128000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, xhigh, max]
+      - id: grok-4-5
+        name: Grok 4.5 (Kie.ai)
+        api: openai-responses
+        baseUrl: https://api.kie.ai/grok/v1
+        reasoning: true
+        input: [text, image]
+        cost: { input: 2, output: 6, cacheRead: 0.5, cacheWrite: 0 }
+        compat:
+          supportsDeveloperRole: false
+        contextWindow: 500000
+        maxTokens: 500000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, xhigh]
+      - id: grok-4-6
+        name: Grok 4.6 (Kie.ai)
+        api: openai-responses
+        baseUrl: https://api.kie.ai/grok/v1
+        reasoning: true
+        input: [text, image]
+        cost: { input: 2, output: 6, cacheRead: 0.5, cacheWrite: 0 }
+        compat:
+          supportsDeveloperRole: false
+        contextWindow: 500000
+        maxTokens: 500000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, xhigh]

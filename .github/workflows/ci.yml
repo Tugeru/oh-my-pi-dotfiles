@@ -1,0 +1,97 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install ShellCheck
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq shellcheck
+
+      - name: Install PyYAML
+        run: pip install --quiet pyyaml
+
+      - name: ShellCheck
+        run: shellcheck install.sh scripts/*.sh
+
+      - name: Structure and YAML checks
+        run: ./scripts/ci-check.sh
+
+      - name: Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install smoke (isolated HOME, copy mode)
+        env:
+          HOME: ${{ runner.temp }}/omp-home-copy
+        run: |
+          set -euo pipefail
+          export PI_CODING_AGENT_DIR="$HOME/.omp/agent"
+          mkdir -p "$HOME"
+
+          ./install.sh --dry-run --skip-packages --profile full
+          ./install.sh --mode copy --skip-packages --profile full
+
+          test -f "$PI_CODING_AGENT_DIR/config.yml"
+          test -f "$PI_CODING_AGENT_DIR/models.yml"
+          test -f "$PI_CODING_AGENT_DIR/extensions/persistent-error-retry.ts"
+          test -f "$PI_CODING_AGENT_DIR/extensions/orca-prefill.ts"
+          diff -u agent/config.yml "$PI_CODING_AGENT_DIR/config.yml"
+          diff -u agent/models.yml "$PI_CODING_AGENT_DIR/models.yml"
+
+          export HOME="${{ runner.temp }}/omp-home-minimal"
+          export PI_CODING_AGENT_DIR="$HOME/.omp/agent"
+          mkdir -p "$HOME"
+          ./install.sh --mode copy --skip-packages --profile minimal
+          test -f "$PI_CODING_AGENT_DIR/config.yml"
+          test -f "$PI_CODING_AGENT_DIR/models.yml"
+          if [[ -e "$PI_CODING_AGENT_DIR/extensions/orca-prefill.ts" ]]; then
+            echo "minimal profile should skip extensions" >&2
+            exit 1
+          fi
+
+          export HOME="${{ runner.temp }}/omp-home-no-orca"
+          export PI_CODING_AGENT_DIR="$HOME/.omp/agent"
+          mkdir -p "$HOME"
+          ./install.sh --mode copy --skip-packages --profile full --no-orca
+          test -f "$PI_CODING_AGENT_DIR/extensions/persistent-error-retry.ts"
+          if [[ -e "$PI_CODING_AGENT_DIR/extensions/orca-prefill.ts" ]]; then
+            echo "--no-orca should skip Orca extensions" >&2
+            exit 1
+          fi
+
+      - name: Install smoke (symlink mode)
+        env:
+          HOME: ${{ runner.temp }}/omp-home-symlink
+        run: |
+          set -euo pipefail
+          export PI_CODING_AGENT_DIR="$HOME/.omp/agent"
+          mkdir -p "$HOME"
+
+          ./install.sh --mode symlink --skip-packages --profile full
+
+          test -L "$PI_CODING_AGENT_DIR/config.yml"
+          test -L "$PI_CODING_AGENT_DIR/models.yml"
+          test -L "$PI_CODING_AGENT_DIR/extensions/orca-prefill.ts"
+          test "$(readlink "$PI_CODING_AGENT_DIR/config.yml")" = "$GITHUB_WORKSPACE/agent/config.yml"
+          test "$(readlink "$PI_CODING_AGENT_DIR/models.yml")" = "$GITHUB_WORKSPACE/agent/models.yml"
+          test "$(readlink "$PI_CODING_AGENT_DIR/extensions/orca-prefill.ts")" = "$GITHUB_WORKSPACE/agent/extensions/orca-prefill.ts"

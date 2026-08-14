@@ -1,0 +1,30 @@
+# Secrets and local auth
+auth/auth.json
+auth/*.local.*
+**/.env
+**/.env.*
+**/secrets*
+
+# Backups created by install/sync
+**/*.bak.*
+**/*.bak
+
+# omp runtime / cache (never track if someone copies live tree)
+agent/auth.json
+agent/ssh.json
+agent/smithery.json
+agent/sessions/
+agent/blobs/
+agent/terminal-sessions/
+agent/*.db
+agent/*.db-*
+agent/package.json
+agent/bun.lock
+agent/node_modules/
+
+# Editor / OS junk
+.DS_Store
+*.swp
+*~
+.idea/
+.vscode/

@@ -1,0 +1,23 @@
+modelRoles: 
+  task: nvidia/qwen/qwen2.5-coder-32b-instruct
+  advisor: kie/gpt-5-6-sol:xhigh
+  smol: opencode-go/deepseek-v4-flash:xhigh
+  slow: openai-codex/gpt-5.6-terra:xhigh
+  plan: kie/gpt-5-6-sol:xhigh
+  commit: openai-codex/gpt-5.6-luna:low
+  designer: openai-codex/gpt-5.6-terra:high
+  tiny: openai-codex/gpt-5.6-luna:low
+  vision: openai-codex/gpt-5.6-terra:high
+  default: openai-codex/gpt-5.6-terra:high
+symbolPreset: unicode
+theme: 
+  dark: titanium
+  light: light
+setupVersion: 1
+hideThinkingBlock: true
+advisor: 
+  enabled: false
+browser: 
+  relay: false
+  cmux: false
+  headless: false
