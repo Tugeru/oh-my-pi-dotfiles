@@ -25,3 +25,7 @@ git:
   enabled: false
 features: 
   unexpectedStopDetection: true
+edit:
+  modelVariants:
+    gpt: apply_patch
+    deepseek: replace
