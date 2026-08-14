@@ -52,7 +52,7 @@ providers:
         baseUrl: https://api.kie.ai/grok/v1
         reasoning: true
         input: [text, image]
-        cost: { input: 2, output: 6, cacheRead: 0.5, cacheWrite: 0 }
+        cost: { input: 0.8, output: 2.4, cacheRead: 0.12, cacheWrite: 0 }
         compat:
           supportsDeveloperRole: false
         contextWindow: 500000
@@ -66,7 +66,7 @@ providers:
         baseUrl: https://api.kie.ai/grok/v1
         reasoning: true
         input: [text, image]
-        cost: { input: 2, output: 6, cacheRead: 0.5, cacheWrite: 0 }
+        cost: { input: 0.8, output: 2.4, cacheRead: 0.2, cacheWrite: 0 }
         compat:
           supportsDeveloperRole: false
         contextWindow: 500000
@@ -74,3 +74,95 @@ providers:
         thinking:
           mode: effort
           efforts: [low, medium, high, xhigh]
+      - id: gemini-3-6-flash
+        name: Gemini 3.6 Flash (Kie.ai)
+        api: openai-completions
+        baseUrl: https://api.kie.ai/gemini-3-6-flash-openai/v1
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0.225, output: 1.125, cacheRead: 0.0225, cacheWrite: 0.28125 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          maxTokensField: max_tokens
+          requiresAssistantAfterToolResult: true
+        contextWindow: 1048576
+        maxTokens: 65536
+        thinking:
+          mode: effort
+          efforts: [low, medium, high]
+      - id: gemini-3-6-flash-openai
+        name: Gemini 3.6 Flash (OpenAI body)
+        api: openai-completions
+        baseUrl: https://api.kie.ai/gemini-3-6-flash-openai/v1
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0.225, output: 1.125, cacheRead: 0.0225, cacheWrite: 0.28125 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          maxTokensField: max_tokens
+          requiresAssistantAfterToolResult: true
+        contextWindow: 1048576
+        maxTokens: 65536
+        thinking:
+          mode: effort
+          efforts: [low, medium, high]
+      - id: gemini-3-6-flash-google
+        name: Gemini 3.6 Flash (Google body)
+        api: google-generative-ai
+        baseUrl: https://api.kie.ai/gemini/v1
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0.225, output: 1.125, cacheRead: 0.0225, cacheWrite: 0.28125 }
+        contextWindow: 1048576
+        maxTokens: 65536
+        thinking:
+          mode: google-level
+          efforts: [low, medium, high]
+      - id: gemini-3-7-flash
+        name: Gemini 3.7 Flash (Kie.ai)
+        api: openai-completions
+        baseUrl: https://api.kie.ai/gemini-3-7-flash-openai/v1
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0.225, output: 1.125, cacheRead: 0.0225, cacheWrite: 0.28125 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          maxTokensField: max_tokens
+          requiresAssistantAfterToolResult: true
+        contextWindow: 1048576
+        maxTokens: 65536
+        thinking:
+          mode: effort
+          efforts: [low, medium, high]
+      - id: gemini-3-7-flash-openai
+        name: Gemini 3.7 Flash (OpenAI body)
+        api: openai-completions
+        baseUrl: https://api.kie.ai/gemini-3-7-flash-openai/v1
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0.225, output: 1.125, cacheRead: 0.0225, cacheWrite: 0.28125 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          maxTokensField: max_tokens
+          requiresAssistantAfterToolResult: true
+        contextWindow: 1048576
+        maxTokens: 65536
+        thinking:
+          mode: effort
+          efforts: [low, medium, high]
+      - id: gemini-3-7-flash-google
+        name: Gemini 3.7 Flash (Google body)
+        api: google-generative-ai
+        baseUrl: https://api.kie.ai/gemini/v1
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0.225, output: 1.125, cacheRead: 0.0225, cacheWrite: 0.28125 }
+        contextWindow: 1048576
+        maxTokens: 65536
+        thinking:
+          mode: google-level
+          efforts: [low, medium, high]

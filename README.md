@@ -112,6 +112,14 @@ apiKey: "!jq -r '.kie.key' $HOME/.omp/agent/auth.json"
 
 The `!cmd` form is evaluated by OMP, so the file contains no credential. The default roles in `agent/config.yml` can also use OMP's bundled providers (for example `openai-codex` and `opencode-go`). Use `/login` for OAuth providers such as OpenAI Codex.
 
+The Kie provider models: GPT-5.6 Sol/Terra/Luna, Grok 4.5/4.6 (Responses API), and
+Gemini 3.6/3.7 Flash in both OpenAI-body and native Google-body forms. The native
+`-google` models (api `google-generative-ai`) need
+`agent/extensions/kie-gemini-compat.ts`: Kie omits `finishReason` on streamed
+candidates and routes by API model name, so the extension drops `[DONE]`, injects
+a synthetic STOP, and rewrites the `-google` id to the API id. Keep the google-body
+`thinking.efforts` at `[low, medium, high]` — Kie 500s on `MINIMAL`.
+
 ## Plugins and optional agents
 
 `pi-9router-ext@0.2.3` is the tracked plugin. `./install.sh` runs:
