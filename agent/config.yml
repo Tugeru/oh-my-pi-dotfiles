@@ -1,14 +1,14 @@
 modelRoles: 
-  task: nvidia/qwen/qwen2.5-coder-32b-instruct
-  advisor: kie/gpt-5-6-sol:xhigh
-  smol: opencode-go/deepseek-v4-flash:xhigh
+  task: opencode-go/deepseek-v4-flash:xhigh
+  advisor: 9router/cx/gpt-5.6-terra:xhigh
+  smol: 9router/ocg/deepseek-v4-flash
   slow: openai-codex/gpt-5.6-terra:xhigh
-  plan: kie/gpt-5-6-sol:xhigh
+  plan: 9router/ocg/deepseek-v4-pro
   commit: openai-codex/gpt-5.6-luna:low
   designer: openai-codex/gpt-5.6-terra:high
-  tiny: openai-codex/gpt-5.6-luna:low
   vision: openai-codex/gpt-5.6-terra:high
-  default: openai-codex/gpt-5.6-terra:high
+  default: 9router/cx/gpt-5.6-terra:medium
+  tiny: 9router/ps/poolside/laguna-s-2.1(xhigh)
 symbolPreset: unicode
 theme: 
   dark: titanium
@@ -21,3 +21,7 @@ browser:
   relay: false
   cmux: false
   headless: false
+git: 
+  enabled: false
+features: 
+  unexpectedStopDetection: true
