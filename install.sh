@@ -86,7 +86,8 @@ backup_if_needed() {
     if [[ -L "$target" ]]; then
       return 0
     fi
-    local backup="${target}.bak.$(timestamp)"
+    local backup
+    backup="${target}.bak.$(timestamp)"
     if [[ "$DRY_RUN" -eq 1 ]]; then
       printf 'would: mv %s %s\n' "$target" "$backup"
     else
