@@ -58,6 +58,12 @@ if [[ -d "$OMP_AGENT_DIR/extensions" ]]; then
   for extension in "$OMP_AGENT_DIR/extensions"/*; do
     [[ -f "$extension" || -L "$extension" ]] || continue
     name="$(basename "$extension")"
+    case "$name" in
+      *.bak|*.bak.*)
+        log "skip installer backup $extension"
+        continue
+        ;;
+    esac
     copy_file "$extension" "$REPO_DIR/agent/extensions/$name"
   done
   shopt -u nullglob
