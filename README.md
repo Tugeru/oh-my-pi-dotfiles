@@ -114,13 +114,29 @@ The `!cmd` form is evaluated by OMP, so the file contains no credential. The def
 
 ## Plugins and optional agents
 
-There are no plugins installed initially. Add a pinned plugin to `agent/packages.list`:
+`pi-9router-ext@0.2.3` is the tracked plugin. `./install.sh` runs:
 
-```text
-package-name@1.2.3
+```bash
+omp install pi-9router-ext@0.2.3
 ```
 
-Then run `./install.sh`; it invokes `omp install package-name@1.2.3`. If you install a plugin interactively, run `./scripts/sync-from-live.sh` to rebuild the tracked manifest from `~/.omp/agent/package.json`.
+Plugin trees live outside this repo under `$XDG_DATA_HOME/omp/plugins/` when `XDG_DATA_HOME` is set, otherwise the legacy `~/.omp/plugins/` root; `$OMP_PLUGIN_ROOT` overrides both. They are never tracked. If you install or update a plugin interactively, run `./scripts/sync-from-live.sh`; it rebuilds `agent/packages.list` from that root's `package.json`.
+
+### 9router extension
+
+`pi-9router-ext` connects omp to a [9router](https://github.com/decolua/9router) OpenAI-compatible AI routing proxy. After discovery, its models appear under the dynamic `9router/` provider namespace; existing providers are unchanged.
+
+Configure the connection with environment variables:
+
+```bash
+NINE_ROUTER_BASE_URL=http://localhost:20128 # default
+NINE_ROUTER_API_KEY=nr-...                  # only when 9router requires one
+NINE_ROUTER_ENABLE_REASONING=true            # opt in to thinking levels
+```
+
+Or use `/9router-config` in omp. The extension writes that interactive configuration, including any API key, to the hardcoded `~/.pi/agent/9router-config.json`; it is shared with Pi and is never tracked here. Environment variables take precedence.
+
+Commands: `/9router-status`, `/9router-models`, `/9router-config`, `/9router-reasoning`, `/9router-reload`. Tools: `ninerouter_status`, `ninerouter_web_search`, `ninerouter_web_fetch`. Reasoning is disabled by default. A reachable 9router instance is required before `9router/` models appear; an unreachable instance is a supported, non-fatal startup state.
 
 OMP writes unpacked user agents to `~/.omp/agent/agents/` (`omp agents unpack`). Run `./scripts/sync-from-live.sh` to import them; subsequent installs link each agent directory from `agent/agents/`.
 

@@ -5,6 +5,15 @@ set -euo pipefail
 
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 OMP_AGENT_DIR="${OMP_AGENT_DIR:-${PI_CODING_AGENT_DIR:-$HOME/.omp/agent}}"
+if [[ -n "${OMP_PLUGINS_DIR:-}" ]]; then
+  :
+elif [[ -n "${OMP_PLUGIN_ROOT:-}" ]]; then
+  OMP_PLUGINS_DIR="$OMP_PLUGIN_ROOT"
+elif [[ -n "${XDG_DATA_HOME:-}" ]]; then
+  OMP_PLUGINS_DIR="$XDG_DATA_HOME/omp/plugins"
+else
+  OMP_PLUGINS_DIR="$HOME/.omp/plugins"
+fi
 DRY_RUN=0
 
 log() { printf '==> %s\n' "$*"; }
@@ -82,10 +91,10 @@ if [[ -d "$OMP_AGENT_DIR/agents" ]]; then
   shopt -u nullglob
 fi
 
-if [[ -f "$OMP_AGENT_DIR/package.json" ]]; then
-  log "import plugins $OMP_AGENT_DIR/package.json -> $REPO_DIR/agent/packages.list"
+if [[ -f "$OMP_PLUGINS_DIR/package.json" ]]; then
+  log "import plugins $OMP_PLUGINS_DIR/package.json -> $REPO_DIR/agent/packages.list"
   if [[ "$DRY_RUN" -eq 0 ]]; then
-    python3 - "$OMP_AGENT_DIR/package.json" "$REPO_DIR/agent/packages.list" <<'PY'
+    python3 - "$OMP_PLUGINS_DIR/package.json" "$REPO_DIR/agent/packages.list" <<'PY'
 import json
 import sys
 from pathlib import Path
