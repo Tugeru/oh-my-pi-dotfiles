@@ -8,7 +8,7 @@ modelRoles:
   designer: 9router/cx/gpt-5.6-terra:high
   vision: openai-codex/gpt-5.6-terra:high
   tiny: 9router/ps/poolside/laguna-s-2.1(xhigh):high
-  default: opencode-go/deepseek-v4-pro:max
+  default: 9router/ocg/deepseek-v4-pro:max
 symbolPreset: unicode
 theme: 
   dark: titanium
