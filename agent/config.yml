@@ -1,14 +1,16 @@
 modelRoles: 
   task: opencode-go/deepseek-v4-flash:xhigh
   advisor: 9router/cx/gpt-5.6-terra:xhigh
-  smol: 9router/ocg/deepseek-v4-flash
+  smol: 9router/ocg/deepseek-v4-flash:max
   slow: 9router/cx/gpt-5.6-terra:xhigh
   plan: 9router/ocg/deepseek-v4-pro
   commit: 9router/ps/poolside/laguna-s-2.1(high):high
-  designer: 9router/cx/gpt-5.6-terra:high
+  designer: 9router/ag/gemini-3.7-flash-high:high
   vision: openai-codex/gpt-5.6-terra:high
   tiny: 9router/ps/poolside/laguna-s-2.1(xhigh):high
-  default: 9router/ocg/deepseek-v4-pro:max
+  default: kie/grok-4-6:high
+  implementer: 9router/ocg/deepseek-v4-flash:max
+  scout: 9router/cx/gpt-5.6-luna:medium
 symbolPreset: unicode
 theme: 
   dark: titanium
@@ -29,3 +31,8 @@ edit:
   modelVariants: 
     gpt: apply_patch
     deepseek: replace
+omitThinking: false
+todo: 
+  remindersMax: 5
+task: 
+  showResolvedModelBadge: true
