@@ -23,7 +23,7 @@ PLUGIN_ROOT="${OMP_PLUGIN_ROOT:-${XDG_DATA_HOME:-$HOME/.omp}/omp/plugins}"
 
 # name|pinned-version|repo src|plugin-relative target|marker that only exists in the patched file
 PATCHES=(
-  "pi-9router-ext|0.2.3|agent/patches/pi-9router-ext@0.2.3/index.ts|node_modules/pi-9router-ext/src/index.ts|staticModels = loadStaticModelDefinitions"
+  "pi-9router-ext|0.2.3|agent/patches/pi-9router-ext@0.2.3/index.ts|node_modules/pi-9router-ext/src/index.ts|supportsFinishReason: false"
   "omniroute-pi-extension|2.2.0|agent/patches/omniroute-pi-extension@2.2.0/extensions/omniroute-manager.ts|node_modules/omniroute-pi-extension/extensions/omniroute-manager.ts|omniProviderBaseUrl"
 )
 
