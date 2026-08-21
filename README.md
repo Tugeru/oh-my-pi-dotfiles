@@ -159,13 +159,27 @@ Commands: `/9router-status`, `/9router-models`, `/9router-config`, `/9router-rea
 
 The router's `/v1/models` reports no limits for combo routes (for example the `implementer` combo), and may omit callable routes such as `oc/x-preview-f-free`. The static definitions under the `9router` provider in `agent/models.yml` are authoritative: the extension reads them for matching ids and registers static-only ids as well. This relies on a small patch to the pinned `pi-9router-ext@0.2.3`, kept in `agent/patches/` and applied by `scripts/apply-9router-ext-patch.sh`. `./install.sh` runs it after plugin install, and `./install.sh --doctor` reports whether it is in place.
 
-### Muse Spark through 9router is unusable in omp
+### Muse Spark through 9router
 
-The `oc/muse-spark-1.2-contributor-free` model (and similar opencode-go `oc/` models whose stream never carries a terminal `finish_reason`) works in opencode but fails in omp with `OpenAI completions stream closed before a finish_reason was received`. Root cause: the upstream stream ends with content + a usage chunk + `[DONE]` but no `finish_reason` chunk. omp's openai-completions provider treats that as a truncated stream and throws `incomplete-stream` (`Flag.Transient`); opencode's SDK silently treats `[DONE]` as termination.
+`oc/muse-spark-1.2-contributor-free` is served by the OpenCode Free endpoint. Its
+OpenAI-compatible stream can end with content, usage, and `[DONE]` but no
+choice-level `finish_reason`. OMP 17.4 normally rejects that stream as
+`incomplete-stream` before it can execute a tool call.
 
-Config-side workaround: none. `applyCompatOverrides` drops unknown `compat.*` keys, so a per-model "tolerate missing finish_reason" flag would need a pi-ai core patch — not feasible from a dotfiles repo.
+This repo applies a version-guarded OMP 17.4 patch from
+`scripts/apply-omp-muse-patch.sh`. For this exact 9router model, the patched
+parser infers `stop` or `toolUse` when the stream closes. The existing
+`pi-9router-ext` patch also sets `supportsFinishReason: false` for the model,
+which keeps the runtime metadata explicit. The fix is scoped to this model and
+does not change termination handling for other providers or models.
 
-Retry-loop mitigation (this repo): `agent/extensions/persistent-error-retry.ts` recognizes `incomplete-stream` and `finish_reason was received` as fatal so the user is no longer stuck in an infinite retry on this model. The model itself remains unusable until the upstream starts sending `finish_reason` (or the openai-completions provider is patched upstream). For the same workload use `oc/deepseek-v4-flash-free` (already in `agent/models.yml`, works), or any other `9router/…` model whose stream terminates properly.
+The patch is a local stopgap until OMP ships the compatibility override in its
+configuration schema or 9router normalizes the upstream stream. The installer
+skips unknown OMP versions instead of patching them blindly. Run
+`./install.sh --doctor` after an OMP upgrade and reapply the patch if needed.
+
+Tool calls, `read`, `write`, and `edit` remain available. A malformed or empty
+upstream response is still an error. Proxy-pool selection remains in 9router.
 
 ### OmniRoute extension
 
