@@ -1012,6 +1012,10 @@ function mapNineRouterModel(model: NineRouterModel, enableReasoning: boolean, me
 		contextWindow,
 		maxTokens,
 		compat: {
+			// 9router's OpenCode Free Muse Spark route ends with [DONE] without
+			// a choice-level finish_reason. Active OMP/pi-ai supports this
+			// override and infers stop/toolUse after the stream closes.
+			...(model.id === "oc/muse-spark-1.2-contributor-free" ? { supportsFinishReason: false } : {}),
 			// 9router is an OpenAI-compatible proxy. Its translators primarily read
 			// max_tokens, and as a proxy it should not receive OpenAI-only store=false
 			// unless explicitly known to support it.

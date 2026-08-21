@@ -128,7 +128,7 @@ providers:
         name: Muse Spark 1.2 Contributor Free (9router)
         api: openai-completions
         reasoning: true
-        input: [text]
+        input: [text, image]
         cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
         compat:
           supportsStore: false

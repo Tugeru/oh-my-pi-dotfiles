@@ -1,24 +1,24 @@
 modelRoles: 
-  task: 9router/oc/deepseek-v4-flash-free:max
+  task: 9router/oc/muse-spark-1.2-contributor-free:high
   advisor: 9router/cx/gpt-5.6-terra:xhigh
-  smol: 9router/oc/deepseek-v4-flash-free:max
-  slow: kie/gpt-5-6-terra:high
-  plan: kie/grok-4-6:xhigh
+  smol: 9router/oc/muse-spark-1.2-contributor-free:high
+  plan: 9router/oc/x-preview-f-free:max
   commit: 9router/oc/big-pickle
-  designer: 9router/oc/mimo-v2.5-free:max
-  vision: 9router/oc/mimo-v2.5-free:max
+  designer: 9router/oc/muse-spark-1.2-contributor-free:high
+  vision: 9router/oc/muse-spark-1.2-contributor-free:high
   tiny: 9router/oc/big-pickle:high
-  implementer: 9router/oc/deepseek-v4-flash-free:max
-  scout: 9router/oc/deepseek-v4-flash-free:max
-  security-reviewer: 9router/ocg/deepseek-v4-pro:max
-  reviewer: 9router/ocg/deepseek-v4-pro:max
-  default: 9router/ocg/deepseek-v4-flash:max
+  implementer: 9router/oc/muse-spark-1.2-contributor-free:high
+  scout: 9router/oc/muse-spark-1.2-contributor-free:high
+  security-reviewer: kie/gpt-5-6-terra:xhigh
+  reviewer: kie/gpt-5-6-terra:high
+  default: 9router/oc/muse-spark-1.2-contributor-free:xhigh
+  slow: 9router/oc/muse-spark-1.2-contributor-free:xhigh
 symbolPreset: unicode
 theme: 
   dark: titanium
   light: light
 setupVersion: 2
-hideThinkingBlock: false
+hideThinkingBlock: true
 advisor: 
   enabled: false
 browser: 
@@ -45,27 +45,10 @@ dev:
   autoqaConsent: granted
 retry: 
   fallbackChains: 
-    designer: 
-      - 9router/ag/gemini-3.7-flash-high
-    plan: 
-      - 9router/cx/gpt-5.6-terra
     vision: 
       - 9router/ag/gemini-3.7-flash-high
       - 9router/ag/gemini-3.6-flash-high
       - 9router/gc/gemini-3.1-flash-lite-preview
-    implementer: 
-      - 9router/implementer
-    scout: 
-      - 9router/ocg/deepseek-v4-flash
-      - 9router/oc/mimo-v2.5-free
-      - 9router/oc/big-pickle
-    task: 
-      - 9router/ocg/deepseek-v4-flash
-    slow: 
-      - 9router/ocg/deepseek-v4-pro
-    reviewer: 
-      - 9router/oc/nemotron-3-ultra-free
-      - 9router/ps/poolside/laguna-s-2.1
   modelFallback: true
 shellMinimizer: 
   enabled: true
