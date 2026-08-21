@@ -213,6 +213,18 @@ apply_plugin_patches() {
   "$apply"
 }
 
+# Patch the pinned OMP 17.4 bundle for Muse Spark's missing finish_reason.
+apply_omp_patches() {
+  local apply="$REPO_DIR/scripts/apply-omp-muse-patch.sh"
+  [[ -f "$apply" ]] || return 0
+  if [[ "$DRY_RUN" -eq 1 ]]; then
+    printf 'would: %s\n' "$apply"
+    return 0
+  fi
+  "$apply"
+}
+
+
 is_orca_extension() {
   local name="$1"
   local extension
@@ -359,6 +371,14 @@ doctor() {
   elif [[ -f "$omni_src" ]]; then
     printf '  OK  omniroute-pi-extension patch applied\n'
   fi
+  local omp_patch="$REPO_DIR/scripts/apply-omp-muse-patch.sh"
+  if [[ -x "$omp_patch" ]]; then
+    if "$omp_patch" 2>/dev/null | grep -q '^ok:\|^apply:'; then
+      printf '  OK  OMP Muse Spark finish compatibility\n'
+    else
+      printf '  WARN OMP Muse Spark finish compatibility unavailable\n'
+    fi
+  fi
 
   if command -v omp >/dev/null 2>&1; then
     printf '  OK  omp on PATH\n'
@@ -420,7 +440,7 @@ log "orca:      $WITH_ORCA"
 
 install_agent_files
 install_packages
-apply_plugin_patches
+apply_omp_patches
 ensure_auth
 print_auth_help
 
