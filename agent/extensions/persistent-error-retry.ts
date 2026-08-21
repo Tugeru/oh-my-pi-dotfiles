@@ -23,9 +23,15 @@ import { Text } from "@oh-my-pi/pi-tui";
 const CUSTOM_TYPE = "persistent-error-retry";
 const COOLDOWN_MS = 2000;
 
-/** Hard failures where infinite retry only wastes money / loops forever. */
+/** Hard failures where infinite retry only wastes money / loops forever. Includes
+ * the openai-completions `incomplete-stream` error raised when the upstream
+ * never sends a `finish_reason` chunk (e.g. opencode-go `oc/muse-spark-1.2-…
+ * contributor-free` through 9router: stream completes with content, `[DONE]`,
+ * and a usage chunk but no terminal `finish_reason`). Retrying that pattern
+ * only reproduces the same error every attempt — bail and let the user pick
+ * a different model. */
 const FATAL_ERROR_RE =
-	/insufficient_quota|out of budget|quota exceeded|billing|invalid api key|incorrect api key|authentication|unauthorized|permission denied|model_not_found|does not exist|context.?length|maximum context|prompt is too long|GoUsageLimitError|FreeUsageLimitError|Monthly usage limit reached/i;
+	/insufficient_quota|out of budget|quota exceeded|billing|invalid api key|incorrect api key|authentication|unauthorized|permission denied|model_not_found|does not exist|context.?length|maximum context|prompt is too long|GoUsageLimitError|FreeUsageLimitError|Monthly usage limit reached|incomplete-stream|finish_reason was received/i;
 
 interface LastError {
 	message: string;

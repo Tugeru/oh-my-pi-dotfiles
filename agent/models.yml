@@ -1,8 +1,929 @@
 providers:
+  9router:
+    authHeader: true
+    apiKey: "!jq -r '.apiKey // empty' $HOME/.pi/agent/9router-config.json"
+    baseUrl: http://localhost:20128/v1
+    models:
+      - id: oc/deepseek-v4-flash-free
+        name: DeepSeek V4 Flash Free (9router)
+        api: openai-completions
+        reasoning: true
+        input: [text]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 200000
+        maxTokens: 384000
+        thinking:
+          mode: effort
+          efforts: [low, high, max]
+      - id: implementer
+        name: The Implementer Finisher (9router)
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1000000
+        maxTokens: 128000
+        thinking:
+          mode: effort
+          efforts: [low, high, max]
+      - id: oc/x-preview-f-free
+        name: X Preview F Free (9router)
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        supportsTools: true
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1000000
+        maxTokens: 128000
+        thinking:
+          mode: effort
+          efforts: [low, high, max]
+      - id: ps/poolside/laguna-s-2.1
+        name: Poolside Laguna S 2.1 (9router)
+        api: openai-completions
+        reasoning: true
+        input: [text]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 262000
+        maxTokens: 32768
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, xhigh]
+      - id: oc/mimo-v2.5-free
+        name: MIMO V2.5 Free (9router)
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 200000
+        maxTokens: 32000
+        thinking:
+          mode: effort
+          efforts: [low, high, max]
+      - id: oc/big-pickle
+        name: Big Pickle (9router)
+        api: openai-completions
+        reasoning: true
+        input: [text]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 200000
+        maxTokens: 32000
+        thinking:
+          mode: effort
+          efforts: [low, high, max]
+      - id: oc/nemotron-3-ultra-free
+        name: Nemotron 3 Ultra Free (9router)
+        api: openai-completions
+        reasoning: true
+        input: [text]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1000000
+        maxTokens: 128000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, max]
+      - id: oc/muse-spark-1.2-contributor-free
+        name: Muse Spark 1.2 Contributor Free (9router)
+        api: openai-completions
+        reasoning: true
+        input: [text]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1000000
+        maxTokens: 128000
+        thinking:
+          mode: effort
+          efforts: [minimal, low, medium, high, xhigh]
+    # pi-9router-ext discovers models from the router's /v1/models, but the
+    # router reports no limits for combo routes like `implementer`, so discovery
+    # alone would fall back to 128K context / 4K output. The extension prefers
+    # the static definitions in this models list (limits, name, inputs, thinking)
+    # for matching ids. Requires the patched pi-9router-ext — see
+    # scripts/apply-9router-ext-patch.sh.
+  omni:
+    # OmniRoute (http://127.0.0.1:20129) combo routes. Auth is not enforced on
+    # /v1; the key command keeps a working Authorization header when one exists.
+    authHeader: true
+    apiKey: "!jq -r '.providers.omni.apiKey // empty' $HOME/.pi/agent/models.json"
+    baseUrl: http://127.0.0.1:20129
+    models:
+      - id: "auto/best-coding"
+        name: "Auto Best Coding (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1050000
+        maxTokens: 512000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, max]
+      - id: "auto/best-reasoning"
+        name: "Auto Best Reasoning (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1050000
+        maxTokens: 512000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, max]
+      - id: "auto/best-fast"
+        name: "Auto Best Fast (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1050000
+        maxTokens: 512000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, max]
+      - id: "auto/best-vision"
+        name: "Auto Best Vision (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1050000
+        maxTokens: 512000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, max]
+      - id: "auto/best-chat"
+        name: "Auto Best Chat (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1050000
+        maxTokens: 512000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, max]
+      - id: "auto/best-coding-fast"
+        name: "Auto Best Coding Fast (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1050000
+        maxTokens: 512000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, max]
+      - id: "auto/pro-coding"
+        name: "Auto Pro Coding (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1050000
+        maxTokens: 512000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, max]
+      - id: "auto/pro-reasoning"
+        name: "Auto Pro Reasoning (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1050000
+        maxTokens: 512000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, max]
+      - id: "auto/pro-vision"
+        name: "Auto Pro Vision (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1050000
+        maxTokens: 512000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, max]
+      - id: "auto/pro-chat"
+        name: "Auto Pro Chat (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1050000
+        maxTokens: 512000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, max]
+      - id: "auto/pro-fast"
+        name: "Auto Pro Fast (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1050000
+        maxTokens: 512000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, max]
+      - id: "auto/coding"
+        name: "Auto Coding (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1050000
+        maxTokens: 512000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, max]
+      - id: "auto/fast"
+        name: "Auto Fast (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1050000
+        maxTokens: 512000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, max]
+      - id: "auto/chat"
+        name: "Auto Chat (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1050000
+        maxTokens: 512000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, max]
+      - id: "auto/cheap"
+        name: "Auto Cheap (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1050000
+        maxTokens: 512000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, max]
+      - id: "auto/offline"
+        name: "Auto Offline (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1050000
+        maxTokens: 512000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, max]
+      - id: "auto/smart"
+        name: "Auto Smart (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1050000
+        maxTokens: 512000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, max]
+      - id: "auto/claude-opus"
+        name: "Auto Claude Opus (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1050000
+        maxTokens: 512000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, max]
+      - id: "auto/claude-sonnet"
+        name: "Auto Claude Sonnet (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1050000
+        maxTokens: 512000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, max]
+      - id: "auto/best-free"
+        name: "Auto Best Free (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1048576
+        maxTokens: 384000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, max]
+      - id: "auto/best-chaos"
+        name: "Auto Best Chaos (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1050000
+        maxTokens: 512000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, max]
+      - id: "auto/chaos"
+        name: "Auto Chaos (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1050000
+        maxTokens: 512000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, max]
+      - id: "auto/coding:fast"
+        name: "Auto Coding Fast (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1050000
+        maxTokens: 512000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, max]
+      - id: "auto/coding:cheap"
+        name: "Auto Coding Cheap (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1050000
+        maxTokens: 512000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, max]
+      - id: "auto/coding:free"
+        name: "Auto Coding Free (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1048576
+        maxTokens: 384000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, max]
+      - id: "auto/coding:pro"
+        name: "Auto Coding Pro (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1050000
+        maxTokens: 512000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, max]
+      - id: "auto/coding:reliable"
+        name: "Auto Coding Reliable (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1050000
+        maxTokens: 512000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, max]
+      - id: "auto/reasoning"
+        name: "Auto Reasoning (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1050000
+        maxTokens: 512000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, max]
+      - id: "auto/reasoning:pro"
+        name: "Auto Reasoning Pro (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1050000
+        maxTokens: 512000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, max]
+      - id: "auto/vision"
+        name: "Auto Vision (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1050000
+        maxTokens: 512000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, max]
+      - id: "auto/multimodal"
+        name: "Auto Multimodal (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1050000
+        maxTokens: 512000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, max]
+      - id: "auto/glm"
+        name: "Auto Glm (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1000000
+        maxTokens: 131072
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, max]
+      - id: "auto/minimax"
+        name: "Auto Minimax (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1048576
+        maxTokens: 512000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, max]
+      - id: "auto/mimo"
+        name: "Auto Mimo (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1048576
+        maxTokens: 131072
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, max]
+      - id: "auto/zai"
+        name: "Auto Zai (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 128000
+        maxTokens: 8192
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, max]
+      - id: "auto/gemma"
+        name: "Auto Gemma (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 32768
+        maxTokens: 8192
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, max]
+      - id: "auto/llama"
+        name: "Auto Llama (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 128000
+        maxTokens: 8192
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, max]
+      - id: "auto/gemini"
+        name: "Auto Gemini (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1048576
+        maxTokens: 65536
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, max]
+      - id: "kie-codex/gpt-5-6-sol"
+        name: "GPT-5.6 Sol (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 5, output: 30, cacheRead: 0.5, cacheWrite: 6.25 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1050000
+        maxTokens: 128000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, xhigh, max]
+      - id: "kie-codex/gpt-5-6-luna"
+        name: "GPT-5.6 Luna (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 1, output: 6, cacheRead: 0.1, cacheWrite: 1.25 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1050000
+        maxTokens: 128000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, xhigh, max]
+      - id: "kie-codex/gpt-5-4"
+        name: "GPT-5.4 (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 2.5, output: 15, cacheRead: 0.25, cacheWrite: 3.125 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1050000
+        maxTokens: 128000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, xhigh]
+      - id: "kie-codex/gpt-5-6-terra"
+        name: "GPT-5.6 Terra (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 2.5, output: 15, cacheRead: 0.25, cacheWrite: 3.125 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1050000
+        maxTokens: 128000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, xhigh, max]
+      - id: "kie-codex/gpt-5-5"
+        name: "GPT-5.5 (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 1.4, output: 8.4, cacheRead: 0.14, cacheWrite: 1.75 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1050000
+        maxTokens: 128000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, xhigh]
+      - id: "kie-ai/grok-4-6"
+        name: "Grok 4.6 (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0.8, output: 2.4, cacheRead: 0.2, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 500000
+        maxTokens: 500000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, xhigh]
+      - id: "kie-ai/grok-4-5"
+        name: "Grok 4.5 (OmniRoute)"
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0.8, output: 2.4, cacheRead: 0.12, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 500000
+        maxTokens: 500000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, xhigh]
   kie:
     authHeader: true
     apiKey: "!jq -r '.kie.key' $HOME/.omp/agent/auth.json"
     baseUrl: https://api.kie.ai/codex/v1
+    disableStrictTools: true
     models:
       - id: gpt-5-6-sol
         name: GPT-5.6 Sol (Kie.ai)
@@ -46,6 +967,20 @@ providers:
         thinking:
           mode: effort
           efforts: [low, medium, high, xhigh, max]
+      - id: gpt-5-5
+        name: GPT-5.5 (Kie.ai)
+        api: openai-responses
+        baseUrl: https://api.kie.ai/codex/v1
+        reasoning: true
+        input: [text, image]
+        cost: { input: 1.4, output: 8.4, cacheRead: 0.14, cacheWrite: 1.75 }
+        compat:
+          supportsDeveloperRole: false
+        contextWindow: 1050000
+        maxTokens: 128000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, xhigh]
       - id: grok-4-5
         name: Grok 4.5 (Kie.ai)
         api: openai-responses
@@ -166,3 +1101,66 @@ providers:
         thinking:
           mode: google-level
           efforts: [low, medium, high]
+      - id: claude-opus-5
+        name: Claude Opus 5 (Kie.ai)
+        api: anthropic-messages
+        baseUrl: https://api.kie.ai/claude/v1
+        reasoning: true
+        input: [text, image]
+        cost: { input: 2, output: 10, cacheRead: 0, cacheWrite: 0 }
+        contextWindow: 1000000
+        maxTokens: 128000
+        thinking:
+          mode: anthropic-adaptive
+          efforts: [low, medium, high, xhigh, max]
+          supportsDisplay: true
+      - id: claude-opus-4-7
+        name: Claude Opus 4.7 (Kie.ai)
+        api: anthropic-messages
+        baseUrl: https://api.kie.ai/claude/v1
+        reasoning: true
+        input: [text, image]
+        cost: { input: 2, output: 10, cacheRead: 0, cacheWrite: 0 }
+        contextWindow: 1000000
+        maxTokens: 128000
+        thinking:
+          mode: anthropic-adaptive
+          efforts: [low, medium, high, xhigh, max]
+          supportsDisplay: true
+      - id: claude-opus-4-6
+        name: Claude Opus 4.6 (Kie.ai)
+        api: anthropic-messages
+        baseUrl: https://api.kie.ai/claude/v1
+        reasoning: true
+        input: [text, image]
+        cost: { input: 2, output: 10, cacheRead: 0, cacheWrite: 0 }
+        contextWindow: 1000000
+        maxTokens: 128000
+        thinking:
+          mode: anthropic-adaptive
+          efforts: [low, medium, high, xhigh, max]
+          supportsDisplay: true
+
+  zai:
+    authHeader: true
+    apiKey: "YOUR_API_KEY"
+    baseUrl: https://api.z.ai/api/coding/paas/v4
+    models:
+      - id: glm-5.3
+        name: GLM-5.3
+        api: openai-completions
+        reasoning: true
+        input: [text]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: false
+          maxTokensField: max_tokens
+          thinkingFormat: zai
+          zaiToolStream: true
+        contextWindow: 1000000
+        maxTokens: 131072
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, max]

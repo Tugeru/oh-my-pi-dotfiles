@@ -1,2 +1,3 @@
 # omp plugin install <package> — one pinned entry per line, e.g. name@1.2.3
 pi-9router-ext@0.2.3
+omniroute-pi-extension@2.2.0

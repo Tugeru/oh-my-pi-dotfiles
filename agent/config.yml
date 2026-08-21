@@ -1,38 +1,94 @@
 modelRoles: 
-  task: opencode-go/deepseek-v4-flash:xhigh
+  task: 9router/oc/deepseek-v4-flash-free:max
   advisor: 9router/cx/gpt-5.6-terra:xhigh
-  smol: 9router/ocg/deepseek-v4-flash:max
-  slow: 9router/cx/gpt-5.6-terra:xhigh
-  plan: 9router/ocg/deepseek-v4-pro
-  commit: 9router/ps/poolside/laguna-s-2.1(high):high
-  designer: 9router/ag/gemini-3.7-flash-high:high
-  vision: openai-codex/gpt-5.6-terra:high
-  tiny: 9router/ps/poolside/laguna-s-2.1(xhigh):high
-  default: kie/grok-4-6:high
-  implementer: 9router/ocg/deepseek-v4-flash:max
-  scout: 9router/cx/gpt-5.6-luna:medium
+  smol: 9router/oc/deepseek-v4-flash-free:max
+  slow: kie/gpt-5-6-terra:high
+  plan: kie/grok-4-6:xhigh
+  commit: 9router/oc/big-pickle
+  designer: 9router/oc/mimo-v2.5-free:max
+  vision: 9router/oc/mimo-v2.5-free:max
+  tiny: 9router/oc/big-pickle:high
+  implementer: 9router/oc/deepseek-v4-flash-free:max
+  scout: 9router/oc/deepseek-v4-flash-free:max
+  security-reviewer: 9router/ocg/deepseek-v4-pro:max
+  reviewer: 9router/ocg/deepseek-v4-pro:max
+  default: 9router/ocg/deepseek-v4-flash:max
 symbolPreset: unicode
 theme: 
   dark: titanium
   light: light
-setupVersion: 1
-hideThinkingBlock: true
+setupVersion: 2
+hideThinkingBlock: false
 advisor: 
   enabled: false
 browser: 
   relay: false
   cmux: false
   headless: false
+  enabled: false
 git: 
   enabled: false
 features: 
   unexpectedStopDetection: true
 edit: 
-  modelVariants: 
-    gpt: apply_patch
-    deepseek: replace
+  modelVariants: null
 omitThinking: false
 todo: 
   remindersMax: 5
 task: 
   showResolvedModelBadge: true
+  enableEffort: true
+  prewalk: false
+prewalk: 
+  enabled: false
+dev: 
+  autoqaConsent: granted
+retry: 
+  fallbackChains: 
+    designer: 
+      - 9router/ag/gemini-3.7-flash-high
+    plan: 
+      - 9router/cx/gpt-5.6-terra
+    vision: 
+      - 9router/ag/gemini-3.7-flash-high
+      - 9router/ag/gemini-3.6-flash-high
+      - 9router/gc/gemini-3.1-flash-lite-preview
+    implementer: 
+      - 9router/implementer
+    scout: 
+      - 9router/ocg/deepseek-v4-flash
+      - 9router/oc/mimo-v2.5-free
+      - 9router/oc/big-pickle
+    task: 
+      - 9router/ocg/deepseek-v4-flash
+    slow: 
+      - 9router/ocg/deepseek-v4-pro
+    reviewer: 
+      - 9router/oc/nemotron-3-ultra-free
+      - 9router/ps/poolside/laguna-s-2.1
+  modelFallback: true
+shellMinimizer: 
+  enabled: true
+ask: 
+  enabled: false
+statusLine: 
+  preset: default
+  separator: powerline-thin
+  showHookStatus: true
+tui: 
+  textSizing: false
+  codexResetFireworks: true
+display: 
+  showTokenUsage: true
+  collapseCompacted: true
+generate_image: 
+  enabled: true
+github: 
+  enabled: true
+textVerbosity: medium
+model: 
+  loopGuard: 
+    checkAssistantContent: true
+defaultThinkingLevel: auto
+composer: 
+  shape: box

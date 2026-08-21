@@ -201,6 +201,18 @@ install_packages() {
   done < <(read_packages)
 }
 
+# Re-apply the pi-9router-ext patch, which `omp install` wipes by rewriting the
+# plugin tree. See scripts/apply-9router-ext-patch.sh for what it changes.
+apply_plugin_patches() {
+  local apply="$REPO_DIR/scripts/apply-9router-ext-patch.sh"
+  [[ -f "$apply" ]] || return 0
+  if [[ "$DRY_RUN" -eq 1 ]]; then
+    printf 'would: %s\n' "$apply"
+    return 0
+  fi
+  "$apply"
+}
+
 is_orca_extension() {
   local name="$1"
   local extension
@@ -331,6 +343,23 @@ doctor() {
     printf '  WARN auth.json missing — run /login or copy auth/auth.json.example\n'
   fi
 
+  local plugin_root="${OMP_PLUGIN_ROOT:-${XDG_DATA_HOME:-$HOME/.omp}/omp/plugins}"
+  local ext_src="$plugin_root/node_modules/pi-9router-ext/src/index.ts"
+  if [[ -f "$ext_src" ]] && ! grep -q "loadStaticModelDefinitions" "$ext_src" 2>/dev/null; then
+    printf '  WARN pi-9router-ext unpatched — run scripts/apply-9router-ext-patch.sh\n'
+    ok=0
+  elif [[ -f "$ext_src" ]]; then
+    printf '  OK  pi-9router-ext patch applied\n'
+  fi
+
+  local omni_src="$plugin_root/node_modules/omniroute-pi-extension/extensions/omniroute-manager.ts"
+  if [[ -f "$omni_src" ]] && ! grep -q "omniProviderBaseUrl" "$omni_src" 2>/dev/null; then
+    printf '  WARN omniroute-pi-extension unpatched — run scripts/apply-9router-ext-patch.sh\n'
+    ok=0
+  elif [[ -f "$omni_src" ]]; then
+    printf '  OK  omniroute-pi-extension patch applied\n'
+  fi
+
   if command -v omp >/dev/null 2>&1; then
     printf '  OK  omp on PATH\n'
     if PI_CODING_AGENT_DIR="$OMP_AGENT_DIR" omp config list >/dev/null; then
@@ -391,6 +420,7 @@ log "orca:      $WITH_ORCA"
 
 install_agent_files
 install_packages
+apply_plugin_patches
 ensure_auth
 print_auth_help
 

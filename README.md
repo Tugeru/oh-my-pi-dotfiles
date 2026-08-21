@@ -104,15 +104,25 @@ git diff
 
 ## Models and auth
 
-`agent/models.yml` defines the custom Kie provider models. Its API-key command is:
+`agent/models.yml` defines the custom Kie and 9router provider models. The Kie
+API-key command is:
 
 ```yaml
 apiKey: "!jq -r '.kie.key' $HOME/.omp/agent/auth.json"
 ```
 
-The `!cmd` form is evaluated by OMP, so the file contains no credential. The default roles in `agent/config.yml` can also use OMP's bundled providers (for example `openai-codex` and `opencode-go`). Use `/login` for OAuth providers such as OpenAI Codex.
+The static `9router/oc/deepseek-v4-flash-free`, `9router/oc/x-preview-f-free`, and `9router/implementer` models
+read their key from the untracked `~/.pi/agent/9router-config.json` created by
+`/9router-config`.
 
-The Kie provider models: GPT-5.6 Sol/Terra/Luna, Grok 4.5/4.6 (Responses API), and
+`oc/x-preview-f-free` is registered with a 1,000,000-token context window,
+text/image input, text output, low/high/max effort levels, and native tool
+support. OMP 17.4's model schema currently accepts only `text` and `image`
+input capabilities; it cannot declare or forward a `video` model modality, so
+video remains unavailable through OMP even if 9router advertises it.
+
+The Kie provider models: Claude Opus 5, 4.8, 4.7, and 4.6 (Anthropic body), GPT-5.5 and GPT-5.6 Sol/Terra/Luna,
+Grok 4.5/4.6 (Responses API), and
 Gemini 3.6/3.7 Flash in both OpenAI-body and native Google-body forms. The native
 `-google` models (api `google-generative-ai`) need
 `agent/extensions/kie-gemini-compat.ts`: Kie omits `finishReason` on streamed
@@ -122,10 +132,11 @@ a synthetic STOP, and rewrites the `-google` id to the API id. Keep the google-b
 
 ## Plugins and optional agents
 
-`pi-9router-ext@0.2.3` is the tracked plugin. `./install.sh` runs:
+Two tracked plugins, both pinned in `agent/packages.list`:
 
 ```bash
 omp install pi-9router-ext@0.2.3
+omp install omniroute-pi-extension@2.2.0
 ```
 
 Plugin trees live outside this repo under `$XDG_DATA_HOME/omp/plugins/` when `XDG_DATA_HOME` is set, otherwise the legacy `~/.omp/plugins/` root; `$OMP_PLUGIN_ROOT` overrides both. They are never tracked. If you install or update a plugin interactively, run `./scripts/sync-from-live.sh`; it rebuilds `agent/packages.list` from that root's `package.json`.
@@ -145,6 +156,30 @@ NINE_ROUTER_ENABLE_REASONING=true            # opt in to thinking levels
 Or use `/9router-config` in omp. The extension writes that interactive configuration, including any API key, to the hardcoded `~/.pi/agent/9router-config.json`; it is shared with Pi and is never tracked here. Environment variables take precedence.
 
 Commands: `/9router-status`, `/9router-models`, `/9router-config`, `/9router-reasoning`, `/9router-reload`. Tools: `ninerouter_status`, `ninerouter_web_search`, `ninerouter_web_fetch`. Reasoning is disabled by default. A reachable 9router instance is required before `9router/` models appear; an unreachable instance is a supported, non-fatal startup state.
+
+The router's `/v1/models` reports no limits for combo routes (for example the `implementer` combo), and may omit callable routes such as `oc/x-preview-f-free`. The static definitions under the `9router` provider in `agent/models.yml` are authoritative: the extension reads them for matching ids and registers static-only ids as well. This relies on a small patch to the pinned `pi-9router-ext@0.2.3`, kept in `agent/patches/` and applied by `scripts/apply-9router-ext-patch.sh`. `./install.sh` runs it after plugin install, and `./install.sh --doctor` reports whether it is in place.
+
+### Muse Spark through 9router is unusable in omp
+
+The `oc/muse-spark-1.2-contributor-free` model (and similar opencode-go `oc/` models whose stream never carries a terminal `finish_reason`) works in opencode but fails in omp with `OpenAI completions stream closed before a finish_reason was received`. Root cause: the upstream stream ends with content + a usage chunk + `[DONE]` but no `finish_reason` chunk. omp's openai-completions provider treats that as a truncated stream and throws `incomplete-stream` (`Flag.Transient`); opencode's SDK silently treats `[DONE]` as termination.
+
+Config-side workaround: none. `applyCompatOverrides` drops unknown `compat.*` keys, so a per-model "tolerate missing finish_reason" flag would need a pi-ai core patch — not feasible from a dotfiles repo.
+
+Retry-loop mitigation (this repo): `agent/extensions/persistent-error-retry.ts` recognizes `incomplete-stream` and `finish_reason was received` as fatal so the user is no longer stuck in an infinite retry on this model. The model itself remains unusable until the upstream starts sending `finish_reason` (or the openai-completions provider is patched upstream). For the same workload use `oc/deepseek-v4-flash-free` (already in `agent/models.yml`, works), or any other `9router/…` model whose stream terminates properly.
+
+### OmniRoute extension
+
+`omniroute-pi-extension` integrates [OmniRoute](https://github.com/diegosouzapw/OmniRoute), the local AI gateway: `/omni` status/toggle/providers/log-review, plus a status-bar readout of which model actually served each response.
+
+Ports matter here: this machine runs **9router on 20128 and OmniRoute on 20129** (two different routers, same default port — OmniRoute shifted up). The extension's own default is 20128, so the patched copy resolves the base URL from the `omni` provider in `agent/models.yml` first (env `OMNIROUTE_URL` still wins, then `~/.pi/agent/models.json`). The patched file lives in `agent/patches/omniroute-pi-extension@2.2.0/` and is applied by the same `scripts/apply-9router-ext-patch.sh` (now multi-plugin).
+
+The `omni` provider in `agent/models.yml` statically declares this OmniRoute's 38 combo routes (`auto/*`) with the limits OmniRoute reports (`contextWindow`/`maxTokens`). OmniRoute does not enforce auth on `/v1/*`, so the apiKey is an optional `!jq` read of Pi's `~/.pi/agent/models.json`. Combos are created/edited in the OmniRoute dashboard; to refresh the list in omp run:
+
+```text
+/omni sync
+```
+
+Unlike stock, the patched extension writes `providers.omni.models` back into the omp `models.yml` (YAML) instead of Pi's `models.json` — omp never reads that file. `ctx.modelRegistry.refresh()` reloads the picker immediately, no restart needed. Management endpoints (`/api/*`) require the OmniRoute admin password (`/omni setup-key`); the inferencing endpoints (`/v1/*`) do not.
 
 OMP writes unpacked user agents to `~/.omp/agent/agents/` (`omp agents unpack`). Run `./scripts/sync-from-live.sh` to import them; subsequent installs link each agent directory from `agent/agents/`.
 
