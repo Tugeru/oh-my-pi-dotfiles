@@ -264,9 +264,19 @@ install_agent_files() {
     local agent name
     shopt -s nullglob
     for agent in "$REPO_DIR/agent/agents"/*; do
-      [[ -d "$agent" ]] || continue
       name="$(basename "$agent")"
       install_path "$agent" "$OMP_AGENT_DIR/agents/$name"
+    done
+    shopt -u nullglob
+  fi
+
+  # Skills (e.g. autoprompt) are symlinked into OMP's native skills root so
+  # they are discovered as user skills; each skill is its own directory.
+  if [[ -d "$REPO_DIR/agent/skills" ]]; then
+    local skill
+    shopt -s nullglob
+    for skill in "$REPO_DIR/agent/skills"/*/; do
+      install_path "${skill%/}" "$OMP_AGENT_DIR/skills/$(basename "$skill")"
     done
     shopt -u nullglob
   fi
