@@ -90,6 +90,23 @@ providers:
         thinking:
           mode: effort
           efforts: [low, high, max]
+      - id: chat-blrt/mimo-v2.5
+        name: MIMO V2.5 (9router)
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1000000
+        maxTokens: 32000
+        thinking:
+          mode: effort
+          efforts: [low, high, max]
       - id: oc/big-pickle
         name: Big Pickle (9router)
         api: openai-completions
@@ -124,6 +141,40 @@ providers:
         thinking:
           mode: effort
           efforts: [low, medium, high, max]
+      - id: chat-blrt/deepseek-v4-flash
+        name: DeepSeek V4 Flash (9router)
+        api: openai-completions
+        reasoning: true
+        input: [text]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1000000
+        maxTokens: 384000
+        thinking:
+          mode: effort
+          efforts: [low, high, max]
+      - id: chat-blrt/deepseek-v4-flash-vision-exp
+        name: DeepSeek V4 Flash Vision Exp (9router)
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1000000
+        maxTokens: 384000
+        thinking:
+          mode: effort
+          efforts: [low, high, max]
       - id: oc/muse-spark-1.2-contributor-free
         name: Muse Spark 1.2 Contributor Free (9router)
         api: openai-completions
@@ -141,6 +192,41 @@ providers:
         thinking:
           mode: effort
           efforts: [minimal, low, medium, high, xhigh]
+      - id: ocg/ox-alpha-free
+        name: ocg ox alpha (9router)
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        supportsTools: true
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1000000
+        maxTokens: 128000
+        thinking:
+          mode: effort
+          efforts: [low, high, max]
+      - id: cx/gpt-5.6-luna
+        name: GPT-5.6 Luna (9router)
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 372000
+        maxTokens: 128000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, xhigh, max]
     # pi-9router-ext discovers models from the router's /v1/models, but the
     # router reports no limits for combo routes like `implementer`, so discovery
     # alone would fall back to 128K context / 4K output. The extension prefers
@@ -1164,3 +1250,124 @@ providers:
         thinking:
           mode: effort
           efforts: [low, medium, high, max]
+  zen-relay:
+    # Muse Spark through a Vercel relay pool (deployed 2026-08-24). The
+    # responses API is the only path that serves this model (chat/completions
+    # 500s upstream); omp appends /responses to this baseUrl. The director
+    # function round-robins across 5 relays (distinct Vercel egress IPs) and
+    # rolls over on 429/5xx, dodging the per-IP free-tier quota. Source:
+    # /home/tuge/orca/projects/zen-muse-relay (api/director.js).
+    authHeader: true
+    apiKey: "!jq -r '.opencode.key' $HOME/.omp/agent/auth.json"
+    baseUrl: https://zen-muse-relay.vercel.app/api/director
+    models:
+      - id: muse-spark-1.2-contributor-free
+        name: Muse Spark 1.2 Contributor Free (zen-relay)
+        api: openai-responses
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          thinkingFormat: openai
+        contextWindow: 1000000
+        maxTokens: 128000
+        thinking:
+          mode: effort
+          efforts: [minimal, low, medium, high, xhigh]
+      - id: nemotron-3-ultra-free
+        name: Nemotron 3 Ultra Free (zen-relay)
+        api: openai-completions
+        reasoning: true
+        input: [text]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1000000
+        maxTokens: 128000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, max]
+      - id: hy3-free
+        name: HY3 Free (zen-relay)
+        api: openai-completions
+        reasoning: true
+        input: [text]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 200000
+        maxTokens: 32000
+        thinking:
+          mode: effort
+          efforts: [low, high, max]
+      - id: laguna-s-2.1-free
+        name: Laguna S 2.1 Free (zen-relay)
+        api: openai-completions
+        reasoning: true
+        input: [text]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 262000
+        maxTokens: 32768
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, xhigh]
+      - id: nemotron-3.5-lightning-free
+        name: Nemotron 3.5 Lightning Free (zen-relay)
+        api: openai-completions
+        reasoning: true
+        input: [text]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 200000
+        maxTokens: 32000
+        thinking:
+          mode: effort
+          efforts: [low, high, max]
+  zen-go-relay:
+    # OpenCode Go models (https://opencode.ai/zen/go/v1) through the same
+    # relay pool. ox-alpha-free is completions-only on the go endpoint
+    # (responses 500s), served with the opencode-go API key.
+    authHeader: true
+    apiKey: "!jq -r '.[\"opencode-go\"].key' $HOME/.omp/agent/auth.json"
+    baseUrl: https://zen-muse-relay.vercel.app/api/director/go
+    models:
+      - id: ox-alpha-free
+        name: Ox Alpha Free (zen-go-relay)
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        supportsTools: true
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1000000
+        maxTokens: 128000
+        thinking:
+          mode: effort
+          efforts: [low, high, max]

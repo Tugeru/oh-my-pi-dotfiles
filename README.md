@@ -12,7 +12,7 @@ Daily sync is **git**, not manual copying. Managed files are **symlinked** from 
 | `agent/models.yml` | `~/.omp/agent/models.yml` |
 | `agent/extensions/*` | `~/.omp/agent/extensions/*` |
 | `agent/agents/*` (optional; `*.md` + dirs) | `~/.omp/agent/agents/*` |
-| `agent/skills/*` (omp-native; e.g. `autoprompt`) | `~/.omp/agent/skills/*` |
+| `agent/skills/*` (omp-native; e.g. `autoprompt`, `impeccable`) | `~/.omp/agent/skills/*` |
 | `agent/packages.list` | Installs each line with `omp install <package>` |
 
 Shared skills: `~/.agents/skills` (Pi/OMP `agents` provider) remain owned by [my-pi-dotfiles](https://github.com/Tugeru/my-pi-dotfiles) and its symlinks. OMP-native skills like `autoprompt` live in `~/.omp/agent/skills` (native provider) and are managed here; install that repo first on a new machine if you want the shared skills as well.
@@ -118,9 +118,12 @@ read their key from the untracked `~/.pi/agent/9router-config.json` created by
 
 `oc/x-preview-f-free` is registered with a 1,000,000-token context window,
 text/image input, text output, low/high/max effort levels, and native tool
-support. OMP 17.4's model schema currently accepts only `text` and `image`
-input capabilities; it cannot declare or forward a `video` model modality, so
-video remains unavailable through OMP even if 9router advertises it.
+support. `ocg/ox-alpha-free` is likewise registered with a 1,000,000-token
+context window (the router reports 200K), text/image input, low/high/max
+effort levels, and native tool support. OMP 17.4's model schema currently
+accepts only `text` and `image` input capabilities; it cannot declare or
+forward a `video` model modality, so video remains unavailable through OMP
+even if 9router advertises it.
 
 The Kie provider models: Claude Opus 5, 4.8, 4.7, and 4.6 (Anthropic body), GPT-5.5 and GPT-5.6 Sol/Terra/Luna,
 Grok 4.5/4.6 (Responses API), and
@@ -197,6 +200,35 @@ The `omni` provider in `agent/models.yml` statically declares this OmniRoute's 3
 Unlike stock, the patched extension writes `providers.omni.models` back into the omp `models.yml` (YAML) instead of Pi's `models.json` — omp never reads that file. `ctx.modelRegistry.refresh()` reloads the picker immediately, no restart needed. Management endpoints (`/api/*`) require the OmniRoute admin password (`/omni setup-key`); the inferencing endpoints (`/v1/*`) do not.
 
 OMP writes unpacked user agents to `~/.omp/agent/agents/` (`omp agents unpack`). Run `./scripts/sync-from-live.sh` to import them; subsequent installs link each agent directory from `agent/agents/`.
+
+## Impeccable design skill
+
+`agent/skills/impeccable/` is the compiled `.pi` provider build of [Impeccable](https://impeccable.style), a 23-command frontend design skill. The installer symlinks it to `~/.omp/agent/skills/impeccable/`, the native omp skills root, so `/impeccable <command> <target>` works in any omp session. It needs Node.js (>= 22) on PATH for its bundled scripts; `npx impeccable` (the detector CLI) is an optional complement and is fetched from npm on first use.
+
+The `.pi` build is used because omp is the Pi harness lineage: it carries the `allowed-tools` frontmatter (`Bash(npx impeccable *)`, `Bash(node .pi/skills/impeccable/scripts/*)`) and Pi path tokens. omp reports the skill's base directory to the agent, which resolves the `.pi/skills/impeccable/scripts/*` tokens against it at runtime — verified working on OMP 17.4.
+
+Per-project setup (not part of this repo):
+
+```text
+/impeccable init      # creates PRODUCT.md (strategy)
+/impeccable document  # creates DESIGN.md + .impeccable/design.json
+```
+
+The automatic design hook (detector on every UI edit) is not available on omp — Impeccable only wires hooks for Claude, Copilot, Codex, Cursor, and Grok. The skill covers the hookless case by running the bundled detector explicitly (`node <skill-dir>/scripts/detect.mjs --json` on changed targets). Live Mode works out of the box: it starts its own localhost server, independent of omp's `browser.enabled` setting.
+
+To update the pinned skill, re-download the universal bundle and replace the tracked tree (no installer change needed):
+
+```bash
+cd /tmp
+curl -fsSL -o impeccable-bundle.zip https://impeccable.style/api/download/bundle/universal
+rm -rf /tmp/impeccable-update && mkdir -p /tmp/impeccable-update
+unzip -q impeccable-bundle.zip '.pi/skills/impeccable/*' -d /tmp/impeccable-update
+rsync -a --delete /tmp/impeccable-update/.pi/skills/impeccable/ \
+  ~/oh-my-pi-dotfiles/agent/skills/impeccable/
+cd ~/oh-my-pi-dotfiles && git add -A agent/skills/impeccable && git commit -m "chore: bump impeccable skill"
+```
+
+Check the current pinned version in `agent/skills/impeccable/SKILL.md` frontmatter, or run `npx impeccable check` from any project to compare against the npm latest.
 
 ## Checks
 

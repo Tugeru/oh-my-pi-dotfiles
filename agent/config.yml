@@ -1,18 +1,18 @@
 modelRoles: 
-  task: 9router/oc/muse-spark-1.2-contributor-free:high
+  task: 9router/chat-blrt/deepseek-v4-flash:max
   advisor: 9router/cx/gpt-5.6-terra:xhigh
-  smol: 9router/oc/muse-spark-1.2-contributor-free:high
-  plan: 9router/oc/x-preview-f-free:max
+  smol: zen-relay/muse-spark-1.2-contributor-free:xhigh
+  plan: kie/claude-opus-5:high
   commit: 9router/oc/big-pickle
-  designer: 9router/oc/muse-spark-1.2-contributor-free:high
-  vision: 9router/oc/muse-spark-1.2-contributor-free:high
+  designer: zen-relay/muse-spark-1.2-contributor-free:xhigh
+  vision: zen-relay/muse-spark-1.2-contributor-free:xhigh
   tiny: 9router/oc/big-pickle:high
-  implementer: 9router/oc/muse-spark-1.2-contributor-free:high
-  scout: 9router/oc/muse-spark-1.2-contributor-free:high
-  security-reviewer: kie/gpt-5-6-terra:xhigh
-  reviewer: kie/gpt-5-6-terra:high
-  default: 9router/oc/muse-spark-1.2-contributor-free:xhigh
-  slow: 9router/oc/muse-spark-1.2-contributor-free:xhigh
+  implementer: 9router/chat-blrt/deepseek-v4-flash:max
+  scout: 9router/chat-blrt/deepseek-v4-flash:high
+  security-reviewer: kie/gpt-5-6-sol:high
+  reviewer: kie/gpt-5-6-sol:medium
+  default: zen-relay/muse-spark-1.2-contributor-free:xhigh
+  slow: 9router/ocg/ox-alpha-free:max
 symbolPreset: unicode
 theme: 
   dark: titanium
@@ -36,6 +36,7 @@ omitThinking: false
 todo: 
   remindersMax: 5
 task: 
+  maxRecursionDepth: 4
   showResolvedModelBadge: true
   enableEffort: true
   prewalk: false
@@ -49,6 +50,28 @@ retry:
       - 9router/ag/gemini-3.7-flash-high
       - 9router/ag/gemini-3.6-flash-high
       - 9router/gc/gemini-3.1-flash-lite-preview
+    security-reviewer: 
+      - 9router/chat-blrt/deepseek-v4-flash
+      - 9router/oc/muse-spark-1.2-contributor-free
+    reviewer: 
+      - 9router/chat-blrt/deepseek-v4-flash
+      - 9router/oc/muse-spark-1.2-contributor-free
+    slow: 
+      - 9router/chat-blrt/deepseek-v4-flash
+      - 9router/oc/muse-spark-1.2-contributor-free
+    default: 
+      - 9router/chat-blrt/deepseek-v4-flash
+      - zen-relay/muse-spark-1.2-contributor-free
+    smol: 
+      - 9router/chat-blrt/deepseek-v4-flash-vision-exp
+      - 9router/chat-blrt/deepseek-v4-flash
+      - opencode-zen/muse-spark-1.2-contributor-free
+    implementer: 
+      - 9router/oc/muse-spark-1.2-contributor-free
+    scout: 
+      - 9router/oc/muse-spark-1.2-contributor-free
+    task: 
+      - 9router/oc/muse-spark-1.2-contributor-free
   modelFallback: true
 shellMinimizer: 
   enabled: true
@@ -75,3 +98,7 @@ model:
 defaultThinkingLevel: auto
 composer: 
   shape: box
+irc: 
+  timeoutMs: 300000
+astGrep: 
+  enabled: true
