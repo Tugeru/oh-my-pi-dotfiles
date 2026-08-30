@@ -45,6 +45,7 @@ prewalk:
 dev: 
   autoqaConsent: granted
 retry: 
+  modelFallback: true
   fallbackChains: 
     vision: 
       - 9router/ag/gemini-3.7-flash-high
@@ -72,7 +73,6 @@ retry:
       - 9router/oc/muse-spark-1.2-contributor-free
     task: 
       - 9router/oc/muse-spark-1.2-contributor-free
-  modelFallback: true
 shellMinimizer: 
   enabled: true
 ask: 

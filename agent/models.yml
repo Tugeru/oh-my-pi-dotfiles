@@ -192,8 +192,8 @@ providers:
         thinking:
           mode: effort
           efforts: [minimal, low, medium, high, xhigh]
-      - id: ocg/ox-alpha-free
-        name: ocg ox alpha (9router)
+      - id: chat-blrt/glm-5.3-flash
+        name: glm 5.3 flash
         api: openai-completions
         reasoning: true
         input: [text, image]
@@ -210,6 +210,23 @@ providers:
         thinking:
           mode: effort
           efforts: [low, high, max]
+      - id: chat-blrt/qwen3.8-flash
+        name: Qwen3 8B Flash (9router)
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1000000
+        maxTokens: 131000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, xhigh]
       - id: cx/gpt-5.6-luna
         name: GPT-5.6 Luna (9router)
         api: openai-completions
@@ -1352,22 +1369,5 @@ providers:
     authHeader: true
     apiKey: "!jq -r '.[\"opencode-go\"].key' $HOME/.omp/agent/auth.json"
     baseUrl: https://zen-muse-relay.vercel.app/api/director/go
-    models:
-      - id: ox-alpha-free
-        name: Ox Alpha Free (zen-go-relay)
-        api: openai-completions
-        reasoning: true
-        input: [text, image]
-        supportsTools: true
-        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
-        compat:
-          supportsStore: false
-          supportsDeveloperRole: false
-          supportsReasoningEffort: true
-          maxTokensField: max_tokens
-          thinkingFormat: openai
-        contextWindow: 1000000
-        maxTokens: 128000
-        thinking:
-          mode: effort
-          efforts: [low, high, max]
+    models: []
+    
