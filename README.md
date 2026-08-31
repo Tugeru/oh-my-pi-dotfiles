@@ -134,6 +134,19 @@ candidates and routes by API model name, so the extension drops `[DONE]`, inject
 a synthetic STOP, and rewrites the `-google` id to the API id. Keep the google-body
 `thinking.efforts` at `[low, medium, high]` — Kie 500s on `MINIMAL`.
 
+The `gemini` provider models hit Google AI Studio's official OpenAI-compatible
+endpoint (`https://generativelanguage.googleapis.com/v1beta/openai/`) directly
+with the key from the untracked `~/.omp/agent/auth.json` (`.gemini.key`, same
+`!jq` reference pattern as Kie). Registered models — Gemini 3.6 Flash, 3.5
+Flash, 3 Flash Preview, and 3.1 Flash-Lite — each verified working for
+read/edit/write tool calls, hashline edits, reasoning levels, and image input
+through OMP on the free tier. Excluded by testing: Gemini 3.7 Flash and
+`gemini-pro-latest` (intermittent 503s), Gemini 3.1 Pro Preview (free tier
+does not include it; 429), and the retired Gemini 2.5 models (404). Gemini
+accepts `max_tokens`; the OpenAI-compat stream carries Google's
+`extra_content.google.thought_signature` metadata, which OMP ignores. Free tier
+costs $0; the listed `cost` values are paid-tier prices per 1M tokens.
+
 ## Plugins and optional agents
 
 Two tracked plugins, both pinned in `agent/packages.list`:

@@ -1,4 +1,8 @@
 {
+  "gemini": {
+    "type": "api_key",
+    "key": "REPLACE_ME"
+  },
   "kie": {
     "type": "api_key",
     "key": "REPLACE_ME"

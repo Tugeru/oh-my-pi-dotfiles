@@ -1244,6 +1244,83 @@ providers:
           efforts: [low, medium, high, xhigh, max]
           supportsDisplay: true
 
+  gemini:
+    # Google AI Studio (Gemini API) via the official OpenAI-compatible
+    # endpoint (https://ai.google.dev/gemini-api/docs/openai). omp appends
+    # /chat/completions to this baseUrl. Auth is `Authorization: Bearer` with
+    # the key resolved from the untracked ~/.omp/agent/auth.json (.gemini.key),
+    # the same !jq reference pattern as kie. Gemini accepts `max_tokens` and
+    # maps reasoning_effort (minimal/low/medium/high) to thinking levels.
+    # Free tier costs $0; listed prices are the paid tier per 1M tokens.
+    authHeader: true
+    apiKey: "!jq -r '.gemini.key' $HOME/.omp/agent/auth.json"
+    baseUrl: https://generativelanguage.googleapis.com/v1beta/openai
+    models:
+      - id: gemini-3.6-flash
+        name: Gemini 3.6 Flash (Google AI Studio)
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0.75, output: 3.75, cacheRead: 0.075, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          maxTokensField: max_tokens
+          requiresAssistantAfterToolResult: true
+        contextWindow: 1048576
+        maxTokens: 65536
+        thinking:
+          mode: effort
+          efforts: [low, medium, high]
+      - id: gemini-3.5-flash
+        name: Gemini 3.5 Flash (Google AI Studio)
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 1.5, output: 9, cacheRead: 0.15, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          maxTokensField: max_tokens
+          requiresAssistantAfterToolResult: true
+        contextWindow: 1048576
+        maxTokens: 65536
+        thinking:
+          mode: effort
+          efforts: [low, medium, high]
+      - id: gemini-3-flash-preview
+        name: Gemini 3 Flash Preview (Google AI Studio)
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0.5, output: 3, cacheRead: 0.05, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          maxTokensField: max_tokens
+          requiresAssistantAfterToolResult: true
+        contextWindow: 1048576
+        maxTokens: 65536
+        thinking:
+          mode: effort
+          efforts: [low, medium, high]
+      - id: gemini-3.1-flash-lite
+        name: Gemini 3.1 Flash-Lite (Google AI Studio)
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0.25, output: 1.5, cacheRead: 0.025, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          maxTokensField: max_tokens
+          requiresAssistantAfterToolResult: true
+        contextWindow: 1048576
+        maxTokens: 65536
+        thinking:
+          mode: effort
+          efforts: [low, medium, high]
+
   zen-relay:
     # Muse Spark through a Vercel relay pool (deployed 2026-08-24). The
     # responses API is the only path that serves this model (chat/completions
