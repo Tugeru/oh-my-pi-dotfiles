@@ -1244,7 +1244,7 @@ providers:
           efforts: [low, medium, high, xhigh, max]
           supportsDisplay: true
 
-    zen-relay:
+  zen-relay:
     # Muse Spark through a Vercel relay pool (deployed 2026-08-24). The
     # responses API is the only path that serves this model (chat/completions
     # 500s upstream); omp appends /responses to this baseUrl. The director

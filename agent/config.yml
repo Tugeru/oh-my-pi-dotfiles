@@ -1,4 +1,4 @@
-modelRoles: 
+modelRoles:
   task: 9router/chat-blrt/deepseek-v4-flash:max
   advisor: 9router/cx/gpt-5.6-terra:xhigh
   smol: zen-relay/muse-spark-1.2-contributor-free:xhigh
@@ -11,94 +11,94 @@ modelRoles:
   scout: 9router/chat-blrt/deepseek-v4-flash:high
   security-reviewer: kie/gpt-5-6-sol:high
   reviewer: kie/gpt-5-6-sol:medium
-  default: zen-relay/muse-spark-1.2-contributor-free:xhigh
+  default: 9router/chat-blrt/glm-5.3-flash
   slow: 9router/ocg/ox-alpha-free:max
 symbolPreset: unicode
-theme: 
+theme:
   dark: titanium
   light: light
 setupVersion: 2
 hideThinkingBlock: true
-advisor: 
+advisor:
   enabled: false
-browser: 
+browser:
   relay: false
   cmux: false
   headless: false
   enabled: false
-git: 
+git:
   enabled: false
-features: 
-  unexpectedStopDetection: true
-edit: 
+features:
+  unexpectedStopDetection: smart
+edit:
   modelVariants: null
 omitThinking: false
-todo: 
+todo:
   remindersMax: 5
-task: 
+task:
   maxRecursionDepth: 4
   showResolvedModelBadge: true
   enableEffort: true
   prewalk: false
-prewalk: 
+prewalk:
   enabled: false
-dev: 
+dev:
   autoqaConsent: granted
-retry: 
+retry:
   modelFallback: true
-  fallbackChains: 
-    vision: 
+  fallbackChains:
+    vision:
       - 9router/ag/gemini-3.7-flash-high
       - 9router/ag/gemini-3.6-flash-high
       - 9router/gc/gemini-3.1-flash-lite-preview
-    security-reviewer: 
+    security-reviewer:
       - 9router/chat-blrt/deepseek-v4-flash
       - 9router/oc/muse-spark-1.2-contributor-free
-    reviewer: 
+    reviewer:
       - 9router/chat-blrt/deepseek-v4-flash
       - 9router/oc/muse-spark-1.2-contributor-free
-    slow: 
+    slow:
       - 9router/chat-blrt/deepseek-v4-flash
       - 9router/oc/muse-spark-1.2-contributor-free
-    default: 
+    default:
       - 9router/chat-blrt/deepseek-v4-flash
       - zen-relay/muse-spark-1.2-contributor-free
-    smol: 
+    smol:
       - 9router/chat-blrt/deepseek-v4-flash-vision-exp
       - 9router/chat-blrt/deepseek-v4-flash
       - opencode-zen/muse-spark-1.2-contributor-free
-    implementer: 
+    implementer:
       - 9router/oc/muse-spark-1.2-contributor-free
-    scout: 
+    scout:
       - 9router/oc/muse-spark-1.2-contributor-free
-    task: 
+    task:
       - 9router/oc/muse-spark-1.2-contributor-free
-shellMinimizer: 
+shellMinimizer:
   enabled: true
-ask: 
+ask:
   enabled: false
-statusLine: 
+statusLine:
   preset: default
   separator: powerline-thin
   showHookStatus: true
-tui: 
+tui:
   textSizing: false
   codexResetFireworks: true
-display: 
+display:
   showTokenUsage: true
   collapseCompacted: true
-generate_image: 
+generate_image:
   enabled: true
-github: 
+github:
   enabled: true
 textVerbosity: medium
-model: 
-  loopGuard: 
+model:
+  loopGuard:
     checkAssistantContent: true
 defaultThinkingLevel: auto
-composer: 
+composer:
   shape: box
-irc: 
+irc:
   timeoutMs: 300000
-astGrep: 
+astGrep:
   enabled: true
