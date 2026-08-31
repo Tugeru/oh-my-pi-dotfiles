@@ -270,7 +270,7 @@ install_agent_files() {
     shopt -u nullglob
   fi
 
-  # Skills (e.g. autoprompt) are symlinked into OMP's native skills root so
+  # Skills are symlinked into OMP's native skills root so
   # they are discovered as user skills; each skill is its own directory.
   if [[ -d "$REPO_DIR/agent/skills" ]]; then
     local skill

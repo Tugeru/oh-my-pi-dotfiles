@@ -12,10 +12,10 @@ Daily sync is **git**, not manual copying. Managed files are **symlinked** from 
 | `agent/models.yml` | `~/.omp/agent/models.yml` |
 | `agent/extensions/*` | `~/.omp/agent/extensions/*` |
 | `agent/agents/*` (optional; `*.md` + dirs) | `~/.omp/agent/agents/*` |
-| `agent/skills/*` (omp-native; e.g. `autoprompt`, `impeccable`) | `~/.omp/agent/skills/*` |
+| `agent/skills/*` (omp-native; e.g. `impeccable`) | `~/.omp/agent/skills/*` |
 | `agent/packages.list` | Installs each line with `omp install <package>` |
 
-Shared skills: `~/.agents/skills` (Pi/OMP `agents` provider) remain owned by [my-pi-dotfiles](https://github.com/Tugeru/my-pi-dotfiles) and its symlinks. OMP-native skills like `autoprompt` live in `~/.omp/agent/skills` (native provider) and are managed here; install that repo first on a new machine if you want the shared skills as well.
+Shared skills: `~/.agents/skills` (Pi/OMP `agents` provider) remain owned by [my-pi-dotfiles](https://github.com/Tugeru/my-pi-dotfiles) and its symlinks. OMP-native skills live in `~/.omp/agent/skills` (native provider) and are managed here; install that repo first on a new machine if you want the shared skills as well.
 
 ## Never tracked
 

@@ -2,7 +2,7 @@ providers:
   9router:
     authHeader: true
     apiKey: "!jq -r '.apiKey // empty' $HOME/.pi/agent/9router-config.json"
-    baseUrl: http://localhost:20128/v1
+    baseUrl: https://home-lab.taild41bb3.ts.net/v1
     models:
       - id: oc/deepseek-v4-flash-free
         name: DeepSeek V4 Flash Free (9router)
