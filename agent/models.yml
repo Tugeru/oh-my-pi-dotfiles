@@ -208,7 +208,7 @@ providers:
         maxTokens: 128000
         thinking:
           mode: effort
-          efforts: [minimal, low, medium, high, xhigh]
+          efforts: [minimal, low, medium, high, xhigh, max]
       - id: chat-blrt/glm-5.3-flash
         name: glm 5.3 flash
         api: openai-completions
@@ -257,6 +257,23 @@ providers:
           maxTokensField: max_tokens
           thinkingFormat: openai
         contextWindow: 372000
+        maxTokens: 128000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, xhigh, max]
+      - id: cx/gpt-6-astra
+        name: GPT-6 Astra (9router)
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 400000
         maxTokens: 128000
         thinking:
           mode: effort
