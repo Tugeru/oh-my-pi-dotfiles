@@ -192,6 +192,23 @@ providers:
         thinking:
           mode: effort
           efforts: [minimal, low, medium, high, xhigh]
+      - id: oc/muse-spark-1.3-contributor-free
+        name: Muse Spark 1.3 Contributor Free (9router)
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1000000
+        maxTokens: 128000
+        thinking:
+          mode: effort
+          efforts: [minimal, low, medium, high, xhigh]
       - id: chat-blrt/glm-5.3-flash
         name: glm 5.3 flash
         api: openai-completions
@@ -1348,6 +1365,22 @@ providers:
         thinking:
           mode: effort
           efforts: [minimal, low, medium, high, xhigh]
+      - id: muse-spark-1.3-contributor-free
+        name: Muse Spark 1.3 Contributor Free (zen-relay)
+        api: openai-responses
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          thinkingFormat: openai
+        contextWindow: 1000000
+        maxTokens: 128000
+        thinking:
+          mode: effort
+          efforts: [minimal, low, medium, high, xhigh]
       - id: nemotron-3-ultra-free
         name: Nemotron 3 Ultra Free (zen-relay)
         api: openai-completions
@@ -1423,5 +1456,37 @@ providers:
     authHeader: true
     apiKey: "!jq -r '.[\"opencode-go\"].key' $HOME/.omp/agent/auth.json"
     baseUrl: https://zen-muse-relay.vercel.app/api/director/go
-    models: []
+    models:
+      - id: muse-spark-1.2-contributor
+        name: Muse Spark 1.2 Contributor (zen-go-relay)
+        api: openai-responses
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          thinkingFormat: openai
+        contextWindow: 1000000
+        maxTokens: 128000
+        thinking:
+          mode: effort
+          efforts: [minimal, low, medium, high, xhigh]
+      - id: muse-spark-1.3-contributor
+        name: Muse Spark 1.3 Contributor (zen-go-relay)
+        api: openai-responses
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          thinkingFormat: openai
+        contextWindow: 1000000
+        maxTokens: 128000
+        thinking:
+          mode: effort
+          efforts: [minimal, low, medium, high, xhigh]
     

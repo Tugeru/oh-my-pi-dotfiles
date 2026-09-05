@@ -1,104 +1,99 @@
-modelRoles: 
-  task: 9router/chat-blrt/deepseek-v4-flash:max
+modelRoles:
+  task: 9router/chat-blrt/glm-5.3-flash:max
   advisor: 9router/cx/gpt-5.6-terra:xhigh
-  smol: zen-relay/muse-spark-1.2-contributor-free:xhigh
+  smol: 9router/chat-blrt/glm-5.3-flash:high
   plan: kie/claude-opus-5:high
   commit: 9router/oc/big-pickle
-  designer: zen-relay/muse-spark-1.2-contributor-free:xhigh
-  vision: zen-relay/muse-spark-1.2-contributor-free:xhigh
+  designer: 9router/chat-blrt/glm-5.3-flash:max
+  vision: 9router/chat-blrt/glm-5.3-flash:high
   tiny: 9router/oc/big-pickle:high
-  implementer: 9router/chat-blrt/deepseek-v4-flash:max
-  scout: 9router/chat-blrt/deepseek-v4-flash:high
-  security-reviewer: kie/gpt-5-6-sol:high
-  reviewer: kie/gpt-5-6-sol:medium
+  implementer: 9router/chat-blrt/glm-5.3:high
+  scout: 9router/oc/muse-spark-1.3-contributor-free:high
+  security-reviewer: 9router/cx/gpt-5.6-sol:high
+  reviewer: 9router/cx/gpt-5.6-sol:medium
   default: 9router/chat-blrt/glm-5.3-flash
-  slow: 9router/ocg/ox-alpha-free:max
+  slow: 9router/chat-blrt/glm-5.3-flash:max
 symbolPreset: unicode
-theme: 
+theme:
   dark: titanium
   light: light
 setupVersion: 2
 hideThinkingBlock: true
-advisor: 
+advisor:
   enabled: false
-browser: 
+browser:
   relay: false
   cmux: false
   headless: false
   enabled: false
-git: 
+git:
   enabled: false
-features: 
+features:
   unexpectedStopDetection: smart
-edit: 
+edit:
   modelVariants: null
 omitThinking: false
-todo: 
+todo:
   remindersMax: 5
-task: 
+task:
   maxRecursionDepth: 4
   showResolvedModelBadge: true
   enableEffort: true
   prewalk: false
-prewalk: 
+prewalk:
   enabled: false
-dev: 
+dev:
   autoqaConsent: granted
-retry: 
+retry:
   modelFallback: true
-  fallbackChains: 
-    vision: 
+  fallbackChains:
+    vision:
       - 9router/ag/gemini-3.7-flash-high
       - 9router/ag/gemini-3.6-flash-high
-      - 9router/gc/gemini-3.1-flash-lite-preview
-    security-reviewer: 
-      - 9router/chat-blrt/deepseek-v4-flash
-      - 9router/oc/muse-spark-1.2-contributor-free
-    reviewer: 
-      - 9router/chat-blrt/deepseek-v4-flash
-      - 9router/oc/muse-spark-1.2-contributor-free
-    slow: 
-      - 9router/chat-blrt/deepseek-v4-flash
-      - 9router/oc/muse-spark-1.2-contributor-free
-    default: 
-      - 9router/chat-blrt/deepseek-v4-flash
-      - zen-relay/muse-spark-1.2-contributor-free
-    smol: 
+    security-reviewer:
+      - 9router/chat-blrt/glm-5.3-flash
+      - 9router/oc/muse-spark-1.3-contributor-free
+    reviewer:
+      - 9router/chat-blrt/glm-5.3-flash
+      - 9router/oc/muse-spark-1.3-contributor-free
+    slow:
+      - 9router/oc/muse-spark-1.3-contributor-free
+    default:
+      - 9router/oc/muse-spark-1.3-contributor-free
+    smol:
+      - 9router/oc/muse-spark-1.3-contributor-free
       - 9router/chat-blrt/deepseek-v4-flash-vision-exp
-      - 9router/chat-blrt/deepseek-v4-flash
-      - opencode-zen/muse-spark-1.2-contributor-free
-    implementer: 
+    implementer:
       - 9router/oc/muse-spark-1.2-contributor-free
-    scout: 
+    task:
       - 9router/oc/muse-spark-1.2-contributor-free
-    task: 
-      - 9router/oc/muse-spark-1.2-contributor-free
-shellMinimizer: 
+shellMinimizer:
   enabled: true
-ask: 
+ask:
   enabled: false
-statusLine: 
+statusLine:
   preset: default
   separator: powerline-thin
   showHookStatus: true
-tui: 
+  compactThinkingLevel: false
+tui:
   textSizing: false
   codexResetFireworks: true
-display: 
+display:
   showTokenUsage: true
   collapseCompacted: true
-generate_image: 
+generate_image:
   enabled: true
-github: 
+github:
   enabled: true
 textVerbosity: medium
-model: 
-  loopGuard: 
+model:
+  loopGuard:
     checkAssistantContent: true
 defaultThinkingLevel: auto
-composer: 
+composer:
   shape: box
-irc: 
+irc:
   timeoutMs: 300000
-astGrep: 
+astGrep:
   enabled: true
