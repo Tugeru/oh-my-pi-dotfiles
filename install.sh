@@ -238,7 +238,7 @@ install_agent_files() {
   [[ -d "$OMP_AGENT_DIR/extensions" ]] || act mkdir -p "$OMP_AGENT_DIR/extensions"
 
   local file
-  for file in config.yml models.yml; do
+  for file in config.yml models.yml mcp.json; do
     [[ -f "$REPO_DIR/agent/$file" ]] || continue
     install_path "$REPO_DIR/agent/$file" "$OMP_AGENT_DIR/$file"
   done
