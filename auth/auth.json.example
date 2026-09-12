@@ -15,6 +15,14 @@
     "type": "api_key",
     "key": "REPLACE_ME"
   },
+  "tokenharbor": {
+    "type": "api_key",
+    "key": "REPLACE_ME"
+  },
+  "ghostcli": {
+    "type": "api_key",
+    "key": "REPLACE_ME"
+  },
   "openai-codex": {
     "type": "oauth",
     "_comment": "Do not fill manually. In pi, run: /login  then choose OpenAI Codex"

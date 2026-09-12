@@ -1524,3 +1524,90 @@ providers:
           mode: effort
           efforts: [minimal, low, medium, high, xhigh]
     
+  tokenharbor:
+    authHeader: true
+    apiKey: "!jq -r '.tokenharbor.key // empty' $HOME/.omp/agent/auth.json"
+    baseUrl: https://tokenharbor.ai/v1
+    models:
+      - id: deepseek-v4.1-flash:free
+        name: DeepSeek V4.1 Flash Free (tokenharbor)
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        supportsTools: true
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1048576
+        maxTokens: 384000
+        thinking:
+          mode: effort
+          efforts: [low, high, max]
+  ghostcli:
+    # GhostCLI gateway (https://ghostcli.dev): Anthropic-compatible body.
+    # omp appends /messages, so baseUrl carries the /v1 prefix (full path:
+    # https://ghostcli.dev/v1/messages). Auth is `Authorization: Bearer`
+    # with the gcli_* key from ~/.omp/agent/auth.json (.ghostcli.key).
+    # Model IDs, 1M context / 128K max_output, and text+image input verified
+    # against GET /v1/models on 2026-09-10 (4 models listed). Reasoning
+    # levels low/medium/high/xhigh are the gateway-advertised set.
+    authHeader: true
+    apiKey: "!jq -r '.ghostcli.key // empty' $HOME/.omp/agent/auth.json"
+    baseUrl: https://ghostcli.dev/v1
+    models:
+      - id: claude-opus-5
+        name: Claude Opus 5 (GhostCLI)
+        api: anthropic-messages
+        baseUrl: https://ghostcli.dev/v1
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        contextWindow: 1000000
+        maxTokens: 128000
+        thinking:
+          mode: anthropic-adaptive
+          efforts: [low, medium, high, xhigh]
+          supportsDisplay: true
+      - id: claude-sonnet-5
+        name: Claude Sonnet 5 (GhostCLI)
+        api: anthropic-messages
+        baseUrl: https://ghostcli.dev/v1
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        contextWindow: 1000000
+        maxTokens: 128000
+        thinking:
+          mode: anthropic-adaptive
+          efforts: [low, medium, high, xhigh]
+          supportsDisplay: true
+      - id: claude-fable-5.1
+        name: Claude Fable 5.1 (GhostCLI)
+        api: anthropic-messages
+        baseUrl: https://ghostcli.dev/v1
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        contextWindow: 1000000
+        maxTokens: 128000
+        thinking:
+          mode: anthropic-adaptive
+          efforts: [low, medium, high, xhigh]
+          supportsDisplay: true
+      - id: z-ai/glm-5.3
+        name: GLM 5.3 (GhostCLI)
+        api: anthropic-messages
+        baseUrl: https://ghostcli.dev/v1
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        contextWindow: 1000000
+        maxTokens: 128000
+        thinking:
+          mode: anthropic-adaptive
+          efforts: [low, medium, high, xhigh]
+          supportsDisplay: true

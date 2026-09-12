@@ -1,18 +1,18 @@
 modelRoles:
-  task: 9router/chat-blrt/glm-5.3-flash:max
+  task: opencode-go/muse-spark-1.3-contributor:xhigh
   advisor: 9router/cx/gpt-5.6-terra:xhigh
   smol: 9router/oc/muse-spark-1.3-contributor-free:xhigh
   plan: kie/claude-opus-5:high
   commit: 9router/oc/big-pickle
-  designer: 9router/chat-blrt/glm-5.3-flash:max
-  vision: 9router/chat-blrt/glm-5.3-flash:high
+  designer: opencode-go/muse-spark-1.3-contributor:xhigh
+  vision: opencode-go/muse-spark-1.3-contributor:xhigh
   tiny: 9router/oc/big-pickle:high
-  implementer: 9router/oc/muse-spark-1.3-contributor-free:xhigh
-  scout: 9router/oc/muse-spark-1.3-contributor-free:high
+  implementer: opencode-go/muse-spark-1.3-contributor:xhigh
+  scout: opencode-go/muse-spark-1.3-contributor:high
   security-reviewer: 9router/cx/gpt-5.6-sol:high
   reviewer: 9router/cx/gpt-5.6-sol:medium
-  default: 9router/chat-blrt/glm-5.3-flash
-  slow: 9router/chat-blrt/glm-5.3-flash:max
+  default: opencode-go/muse-spark-1.3-contributor:xhigh
+  slow: opencode-go/muse-spark-1.3-contributor:xhigh
 symbolPreset: unicode
 theme:
   dark: titanium
@@ -35,6 +35,7 @@ edit:
 omitThinking: false
 todo:
   remindersMax: 5
+  eager: preferred
 task:
   maxRecursionDepth: 4
   showResolvedModelBadge: true
@@ -98,3 +99,7 @@ astGrep:
   enabled: true
 vault:
   enabled: false
+providers:
+  imageOrder:
+    - openai-codex
+    - antigravity
