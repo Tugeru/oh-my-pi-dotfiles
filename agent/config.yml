@@ -1,18 +1,18 @@
 modelRoles:
-  task: opencode-go/muse-spark-1.3-contributor:xhigh
-  advisor: 9router/cx/gpt-5.6-terra:xhigh
-  smol: 9router/oc/muse-spark-1.3-contributor-free:xhigh
+  task: opencode-go/deepseek-v4.1-flash:max
+  advisor: 9router/ghost-dev/claude-fable-5.1:high
+  smol: opencode-go/deepseek-v4.1-flash:max
   plan: kie/claude-opus-5:high
   commit: 9router/oc/big-pickle
-  designer: opencode-go/muse-spark-1.3-contributor:xhigh
+  designer: opencode-go/deepseek-v4.1-flash:max
   vision: opencode-go/muse-spark-1.3-contributor:xhigh
   tiny: 9router/oc/big-pickle:high
-  implementer: opencode-go/muse-spark-1.3-contributor:xhigh
-  scout: opencode-go/muse-spark-1.3-contributor:high
-  security-reviewer: 9router/cx/gpt-5.6-sol:high
-  reviewer: 9router/cx/gpt-5.6-sol:medium
-  default: opencode-go/muse-spark-1.3-contributor:xhigh
-  slow: opencode-go/muse-spark-1.3-contributor:xhigh
+  implementer: opencode-go/deepseek-v4.1-flash:max
+  scout: opencode-go/deepseek-v4.1-flash:high
+  security-reviewer: 9router/ghost-dev/claude-fable-5.1:high
+  reviewer: 9router/ghost-dev/claude-fable-5.1:medium
+  default: opencode-go/deepseek-v4.1-flash:max
+  slow: opencode-go/deepseek-v4.1-flash:max
 symbolPreset: unicode
 theme:
   dark: titanium
@@ -51,22 +51,24 @@ retry:
     vision:
       - 9router/ag/gemini-3.7-flash-high
       - 9router/ag/gemini-3.6-flash-high
-    security-reviewer:
-      - 9router/chat-blrt/glm-5.3-flash
-      - 9router/oc/muse-spark-1.3-contributor-free
-    reviewer:
-      - 9router/chat-blrt/glm-5.3-flash
-      - 9router/oc/muse-spark-1.3-contributor-free
     slow:
-      - 9router/oc/muse-spark-1.3-contributor-free
+      - opencode-go/muse-spark-1.3-contributor
     default:
-      - 9router/oc/muse-spark-1.3-contributor-free
+      - opencode-go/muse-spark-1.3-contributor
     smol:
-      - 9router/chat-blrt/glm-5.3-flash
-    implementer:
-      - 9router/chat-blrt/glm-5.3-flash
+      - opencode-go/muse-spark-1.3-contributor
     task:
       - 9router/oc/muse-spark-1.2-contributor-free
+    designer:
+      - opencode-go/muse-spark-1.3-contributor
+    implementer:
+      - opencode-go/muse-spark-1.3-contributor
+    scout:
+      - opencode-go/muse-spark-1.3-contributor
+    security-reviewer:
+      - 9router/cx/gpt-5.6-sol
+    reviewer:
+      - 9router/cx/gpt-5.6-sol
 shellMinimizer:
   enabled: true
 ask:
