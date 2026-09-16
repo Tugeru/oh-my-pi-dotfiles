@@ -10,6 +10,8 @@ Daily sync is **git**, not manual copying. Managed files are **symlinked** from 
 |---|---|
 | `agent/config.yml` | `~/.omp/agent/config.yml` |
 | `agent/models.yml` | `~/.omp/agent/models.yml` |
+| `agent/mcp.json` | `~/.omp/agent/mcp.json` (default: no servers) |
+| `agent/mcp.notion.json` | Opt-in fragment merged by `scripts/omp-notion.sh` |
 | `agent/extensions/*` | `~/.omp/agent/extensions/*` |
 | `agent/agents/*` (optional; `*.md` + dirs) | `~/.omp/agent/agents/*` |
 | `agent/skills/*` (omp-native; e.g. `impeccable`) | `~/.omp/agent/skills/*` |
@@ -67,6 +69,49 @@ Profiles:
 - `orca` — same as full; named for the Orca-integrated environment.
 
 `--no-orca` keeps core extensions (currently `persistent-error-retry.ts`) but omits the three Orca bridge extensions.
+
+## Notion MCP (opt-in)
+
+`agent/mcp.json` ships empty: Notion is off by default. Opt in per run:
+
+```bash
+./scripts/omp-notion.sh              # interactive, Notion enabled
+./scripts/omp-notion.sh -p "..."     # non-interactive
+```
+`ompn` is already aliased in `~/.config/zsh/.zshrc` — same wrapper, shorter name.
+
+The wrapper stages a temp agent dir (symlinks plus a merged `mcp.json` built from `agent/mcp.notion.json`) and points OMP at it via `PI_CODING_AGENT_DIR`; the live config stays Notion-free. Native fallback: a project-local `.mcp.json` containing the Notion server also opts in (`mcp.enableProjectConfig` is on). The first opt-in launch triggers Notion OAuth in the browser.
+
+Why a script instead of `omp --notion-mcp`: OMP has no `--mcp` flag and `--config` overlays carry only config.yml-style settings, not `mcpServers` — so the flag is emulated outside the binary.
+
+## Composio MCP (opt-in)
+
+`agent/mcp.json` ships empty: Composio is off by default. It is the shared
+gateway to Google Drive, Google Docs, Gmail, and 1000+ other apps through one
+MCP server (`https://connect.composio.dev/mcp`). Opt in per run:
+
+```bash
+export COMPOSIO_CONSUMER_KEY='ck_...'   # one-time per shell; see below
+./scripts/omp-composio.sh              # interactive, Composio enabled
+./scripts/omp-composio.sh -p "..."     # non-interactive
+```
+
+The wrapper stages a temp agent dir (symlinks plus a merged `mcp.json` built
+from `agent/mcp.composio.json`) and points OMP at it via `PI_CODING_AGENT_DIR`;
+the live config stays Composio-free. Same emulation as Notion: OMP has no
+`--mcp` flag and `--config` overlays cannot carry `mcpServers`.
+
+What you fill in yourself (nothing else):
+
+1. `COMPOSIO_CONSUMER_KEY` — from the Composio dashboard (For You / Connect),
+a `ck_...` key. Export it in your shell (`~/.config/zsh/.zshrc` or equivalent)
+or a secret manager. The fragment only holds the `${COMPOSIO_CONSUMER_KEY}`
+reference; the wrapper refuses to launch when it is unset. Never commit the
+raw key.
+2. Google access — in-chat, on first use: `Connect my Google Drive and Google
+Docs accounts.` Composio replies with a short-lived OAuth link; approve it in
+the browser. Tokens stay with Composio and OMP's local credential store
+(`~/.omp/agent/`, gitignored) — never in this repo.
 
 ## Day-to-day workflow
 
