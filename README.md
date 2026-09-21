@@ -42,10 +42,15 @@ Then authenticate once:
 ```bash
 omp
 # /login  → OAuth providers such as OpenAI Codex
-# or copy auth/auth.json.example → ~/.omp/agent/auth.json and fill API keys
 ```
 
-If `~/.omp/agent/auth.json` is absent but Pi's `~/.pi/agent/auth.json` exists, the installer copies it once. It never overwrites or removes either auth file.
+The installer creates `~/.omp/agent/auth.json` from
+`auth/auth.json.example` when it does not already exist. Edit that file and
+replace the `REPLACE_ME` values with API keys for the providers you use.
+The file is under `~/.omp/agent`, not directly under `~/.omp`.
+
+If `~/.omp/agent/auth.json` is absent but Pi's `~/.pi/agent/auth.json` exists,
+the installer copies it once. It never overwrites or removes either auth file.
 
 ### Options
 

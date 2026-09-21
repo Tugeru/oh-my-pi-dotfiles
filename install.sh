@@ -286,11 +286,12 @@ print_auth_help() {
   cat <<EOF
 
 Auth (local only — never committed):
-  Config dir: $OMP_AGENT_DIR/auth.json
-  Example:    $REPO_DIR/auth/auth.json.example
+  Config file: $OMP_AGENT_DIR/auth.json
+  Template:    $REPO_DIR/auth/auth.json.example
 
-In omp, use /login for OAuth providers (for example OpenAI Codex), or copy
-that example to the config dir and fill API keys for configured providers.
+The installer creates the config file from the template when it is missing.
+Edit it to replace REPLACE_ME values, or in omp use /login for OAuth
+providers (for example OpenAI Codex).
 EOF
 }
 
@@ -306,9 +307,26 @@ ensure_auth() {
       log "migrate pi auth $pi_auth -> $auth"
       mkdir -p "$(dirname "$auth")"
       cp -a "$pi_auth" "$auth"
+      chmod 600 "$auth"
     fi
     CHANGES=$((CHANGES + 1))
+    return 0
   fi
+
+  local example="$REPO_DIR/auth/auth.json.example"
+  if [[ ! -f "$example" ]]; then
+    warn "auth template missing: $example"
+    return 0
+  fi
+
+  if [[ "$DRY_RUN" -eq 1 ]]; then
+    printf 'would: install -m 600 %s %s\n' "$example" "$auth"
+  else
+    log "create auth config $auth"
+    mkdir -p "$(dirname "$auth")"
+    install -m 600 "$example" "$auth"
+  fi
+  CHANGES=$((CHANGES + 1))
 }
 
 doctor() {
@@ -365,7 +383,7 @@ doctor() {
     printf '  WARN auth.json missing — run /login or copy auth/auth.json.example\n'
   fi
 
-  local plugin_root="${OMP_PLUGIN_ROOT:-${XDG_DATA_HOME:-$HOME/.omp}/omp/plugins}"
+  local plugin_root="${OMP_PLUGIN_ROOT:-$HOME/.omp/plugins}"
   local ext_src="$plugin_root/node_modules/pi-9router-ext/src/index.ts"
   if [[ -f "$ext_src" ]] && ! grep -q "loadStaticModelDefinitions" "$ext_src" 2>/dev/null; then
     printf '  WARN pi-9router-ext unpatched — run scripts/apply-9router-ext-patch.sh\n'

@@ -19,7 +19,7 @@
 set -euo pipefail
 
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-PLUGIN_ROOT="${OMP_PLUGIN_ROOT:-${XDG_DATA_HOME:-$HOME/.omp}/omp/plugins}"
+PLUGIN_ROOT="${OMP_PLUGIN_ROOT:-$HOME/.omp/plugins}"
 
 # name|pinned-version|repo src|plugin-relative target|marker that only exists in the patched file
 PATCHES=(
