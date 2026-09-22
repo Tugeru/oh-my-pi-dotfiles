@@ -257,6 +257,78 @@ providers:
         thinking:
           mode: effort
           efforts: [low, high, max]
+      - id: neuralwatt/deepseek-v4.1-flash
+        name: DeepSeek V4.1 Flash (neuralwatt/9router)
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        supportsTools: true
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1000000
+        maxTokens: 128000
+        thinking:
+          mode: effort
+          efforts: [low, high, max, xhigh]
+      - id: neuralwatt/deepseek-v4.1-flash-flex
+        name: DeepSeek V4.1 Flash Flex (neuralwatt/9router)
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        supportsTools: true
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1000000
+        maxTokens: 128000
+        thinking:
+          mode: effort
+          efforts: [low, high, max, xhigh]
+      - id: neuralwatt/glm-5.3-flash
+        name: GLM 5.3 Flash (neuralwatt/9router)
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        supportsTools: true
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1000000
+        maxTokens: 128000
+        thinking:
+          mode: effort
+          efforts: [low, high, max]
+      - id: neuralwatt/glm-5.3-flash-flex
+        name: GLM 5.3 Flash Flex (neuralwatt/9router)
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        supportsTools: true
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1000000
+        maxTokens: 128000
+        thinking:
+          mode: effort
+          efforts: [low, high, max]
       - id: cl/z-ai/glm-5.3-flash
         name: GLM 5.3 Flash (9router)
         api: openai-completions
