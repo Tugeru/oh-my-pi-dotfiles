@@ -107,6 +107,19 @@ providers:
         thinking:
           mode: effort
           efforts: [low, high, max]
+      - id: oc/mimo-v2.6-flash-free
+        name: MIMO V2.6 Flash Free (9router)
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 200000
+        maxTokens: 64000
       - id: oc/big-pickle
         name: Big Pickle (9router)
         api: openai-completions
