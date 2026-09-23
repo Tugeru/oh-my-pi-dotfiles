@@ -5,14 +5,13 @@ modelRoles:
   plan: kie/claude-opus-5:high
   commit: 9router/oc/big-pickle
   designer: opencode-go/deepseek-v4.1-flash:max
-  vision: opencode-go/muse-spark-1.3-contributor:xhigh
+  vision: 9router/oc/muse-spark-1.3-contributor-free:xhigh
   tiny: 9router/oc/big-pickle:high
   implementer: 9router/oc/muse-spark-1.3-contributor-free:xhigh
   scout: 9router/oc/muse-spark-1.3-contributor-free:high
-  security-reviewer: 9router/ghost-dev/claude-fable-5.1:high
-  reviewer: 9router/ghost-dev/claude-fable-5.1:medium
-  default: opencode-go/muse-spark-1.3-contributor:xhigh
+  default: 9router/oc/muse-spark-1.3-contributor-free:xhigh
   slow: 9router/oc/muse-spark-1.3-contributor-free:xhigh
+  reviewer: 9router/oc/muse-spark-1.3-contributor-free:xhigh
 symbolPreset: unicode
 theme:
   dark: titanium

@@ -239,6 +239,23 @@ providers:
         thinking:
           mode: effort
           efforts: [minimal, low, medium, high, xhigh]
+      - id: oc/space-bunny-free
+        name: Space Bunny Free (9router)
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 1000000
+        maxTokens: 128000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, xhigh, max]
       - id: chat-blrt/glm-5.3-flash
         name: glm 5.3 flash
         api: openai-completions
@@ -383,6 +400,40 @@ providers:
           efforts: [low, medium, high, xhigh, max]
       - id: cx/gpt-5.6-sol
         name: GPT-5.6 Sol (9router)
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 400000
+        maxTokens: 128000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, xhigh, max]
+      - id: cx/gpt-6-sol
+        name: GPT-6 Sol (9router)
+        api: openai-completions
+        reasoning: true
+        input: [text, image]
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: true
+          maxTokensField: max_tokens
+          thinkingFormat: openai
+        contextWindow: 400000
+        maxTokens: 128000
+        thinking:
+          mode: effort
+          efforts: [low, medium, high, xhigh, max]
+      - id: cx/gpt-6-luna
+        name: GPT-6 Luna (9router)
         api: openai-completions
         reasoning: true
         input: [text, image]
