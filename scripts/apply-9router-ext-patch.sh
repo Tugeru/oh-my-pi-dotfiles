@@ -7,11 +7,6 @@
 #     Static definitions from the omp models.yml (9router provider) win over
 #     the router's bare combo entries, which report no context/output limits
 #     and would otherwise fall back to 128K context / 4K output.
-#   omniroute-pi-extension@2.2.0 (extensions/omniroute-manager.ts)
-#     omp compatibility. Resolve the OmniRoute baseUrl from the `omni` provider
-#     in models.yml (on this machine OmniRoute runs on 20129 because 9router
-#     owns 20128), and make /omni sync write providers.omni.models back into
-#     models.yml (YAML) — omp never reads Pi's models.json.
 #
 # Guards (per plugin):
 #   - no-op when the patch is already applied or the plugin is absent
@@ -24,7 +19,6 @@ PLUGIN_ROOT="${OMP_PLUGIN_ROOT:-$HOME/.omp/plugins}"
 # name|pinned-version|repo src|plugin-relative target|marker that only exists in the patched file
 PATCHES=(
   "pi-9router-ext|0.2.3|agent/patches/pi-9router-ext@0.2.3/index.ts|node_modules/pi-9router-ext/src/index.ts|supportsFinishReason: false"
-  "omniroute-pi-extension|2.2.0|agent/patches/omniroute-pi-extension@2.2.0/extensions/omniroute-manager.ts|node_modules/omniroute-pi-extension/extensions/omniroute-manager.ts|omniProviderBaseUrl"
 )
 
 FAILED=0

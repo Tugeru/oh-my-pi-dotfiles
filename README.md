@@ -162,18 +162,17 @@ API-key command is:
 apiKey: "!jq -r '.kie.key' $HOME/.omp/agent/auth.json"
 ```
 
-The static `9router/oc/deepseek-v4-flash-free`, `9router/oc/x-preview-f-free`, and `9router/implementer` models
+The static `9router/oc/x-preview-f-free` and `9router/implementer` models
 read their key from the untracked `~/.pi/agent/9router-config.json` created by
 `/9router-config`.
 
 `oc/x-preview-f-free` is registered with a 1,000,000-token context window,
 text/image input, text output, low/high/max effort levels, and native tool
-support. `ocg/ox-alpha-free` is likewise registered with a 1,000,000-token
-context window (the router reports 200K), text/image input, low/high/max
-effort levels, and native tool support. OMP 17.4's model schema currently
-accepts only `text` and `image` input capabilities; it cannot declare or
-forward a `video` model modality, so video remains unavailable through OMP
-even if 9router advertises it.
+support. OMP 17.4's model schema currently accepts only `text` and `image`
+input capabilities; it cannot declare or forward a `video` model modality,
+so video remains unavailable through OMP even if 9router advertises it.
+The `oc/fledge-alpha-free` model uses the same pattern: 1,000,000-token context,
+text/image input, 128K max output, and effort-based reasoning.
 
 The Kie provider models: Claude Opus 5, 4.8, 4.7, and 4.6 (Anthropic body), GPT-5.5 and GPT-5.6 Sol/Terra/Luna,
 Grok 4.5/4.6 (Responses API), and
@@ -199,11 +198,10 @@ costs $0; the listed `cost` values are paid-tier prices per 1M tokens.
 
 ## Plugins and optional agents
 
-Two tracked plugins, both pinned in `agent/packages.list`:
+One tracked plugin, pinned in `agent/packages.list`:
 
 ```bash
 omp install pi-9router-ext@0.2.3
-omp install omniroute-pi-extension@2.2.0
 ```
 
 Plugin trees live outside this repo under `$XDG_DATA_HOME/omp/plugins/` when `XDG_DATA_HOME` is set, otherwise the legacy `~/.omp/plugins/` root; `$OMP_PLUGIN_ROOT` overrides both. They are never tracked. If you install or update a plugin interactively, run `./scripts/sync-from-live.sh`; it rebuilds `agent/packages.list` from that root's `package.json`.
@@ -247,20 +245,6 @@ skips unknown OMP versions instead of patching them blindly. Run
 
 Tool calls, `read`, `write`, and `edit` remain available. A malformed or empty
 upstream response is still an error. Proxy-pool selection remains in 9router.
-
-### OmniRoute extension
-
-`omniroute-pi-extension` integrates [OmniRoute](https://github.com/diegosouzapw/OmniRoute), the local AI gateway: `/omni` status/toggle/providers/log-review, plus a status-bar readout of which model actually served each response.
-
-Ports matter here: this machine runs **9router on 20128 and OmniRoute on 20129** (two different routers, same default port — OmniRoute shifted up). The extension's own default is 20128, so the patched copy resolves the base URL from the `omni` provider in `agent/models.yml` first (env `OMNIROUTE_URL` still wins, then `~/.pi/agent/models.json`). The patched file lives in `agent/patches/omniroute-pi-extension@2.2.0/` and is applied by the same `scripts/apply-9router-ext-patch.sh` (now multi-plugin).
-
-The `omni` provider in `agent/models.yml` statically declares this OmniRoute's 38 combo routes (`auto/*`) with the limits OmniRoute reports (`contextWindow`/`maxTokens`). OmniRoute does not enforce auth on `/v1/*`, so the apiKey is an optional `!jq` read of Pi's `~/.pi/agent/models.json`. Combos are created/edited in the OmniRoute dashboard; to refresh the list in omp run:
-
-```text
-/omni sync
-```
-
-Unlike stock, the patched extension writes `providers.omni.models` back into the omp `models.yml` (YAML) instead of Pi's `models.json` — omp never reads that file. `ctx.modelRegistry.refresh()` reloads the picker immediately, no restart needed. Management endpoints (`/api/*`) require the OmniRoute admin password (`/omni setup-key`); the inferencing endpoints (`/v1/*`) do not.
 
 OMP writes unpacked user agents to `~/.omp/agent/agents/` (`omp agents unpack`). Run `./scripts/sync-from-live.sh` to import them; subsequent installs link each agent directory from `agent/agents/`.
 

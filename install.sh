@@ -392,13 +392,6 @@ doctor() {
     printf '  OK  pi-9router-ext patch applied\n'
   fi
 
-  local omni_src="$plugin_root/node_modules/omniroute-pi-extension/extensions/omniroute-manager.ts"
-  if [[ -f "$omni_src" ]] && ! grep -q "omniProviderBaseUrl" "$omni_src" 2>/dev/null; then
-    printf '  WARN omniroute-pi-extension unpatched — run scripts/apply-9router-ext-patch.sh\n'
-    ok=0
-  elif [[ -f "$omni_src" ]]; then
-    printf '  OK  omniroute-pi-extension patch applied\n'
-  fi
   local omp_patch="$REPO_DIR/scripts/apply-omp-muse-patch.sh"
   if [[ -x "$omp_patch" ]]; then
     if "$omp_patch" 2>/dev/null | grep -q '^ok:\|^apply:'; then
