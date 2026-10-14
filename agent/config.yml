@@ -7,7 +7,6 @@ modelRoles:
   tiny: 9router/oc/big-pickle:high
   implementer: 9router/oc/space-bunny-free:xhigh
   scout: 9router/oc/space-bunny-free:xhigh
-  default: 9router/oc/space-bunny-free:xhigh
   slow: 9router/oc/space-bunny-free:xhigh
   reviewer: 9router/cx/gpt-6-sol:high
   smol: 9router/oc/space-bunny-free:high

@@ -53,7 +53,7 @@ jobs:
 
           test -f "$PI_CODING_AGENT_DIR/config.yml"
           test -f "$PI_CODING_AGENT_DIR/models.yml"
-          test -f "$PI_CODING_AGENT_DIR/extensions/persistent-error-retry.ts"
+          test -f "$PI_CODING_AGENT_DIR/extensions/kie-gemini-compat.ts"
           test -f "$PI_CODING_AGENT_DIR/extensions/orca-prefill.ts"
           diff -u agent/config.yml "$PI_CODING_AGENT_DIR/config.yml"
           diff -u agent/models.yml "$PI_CODING_AGENT_DIR/models.yml"
@@ -73,7 +73,7 @@ jobs:
           export PI_CODING_AGENT_DIR="$HOME/.omp/agent"
           mkdir -p "$HOME"
           ./install.sh --mode copy --skip-packages --profile full --no-orca
-          test -f "$PI_CODING_AGENT_DIR/extensions/persistent-error-retry.ts"
+          test -f "$PI_CODING_AGENT_DIR/extensions/kie-gemini-compat.ts"
           if [[ -e "$PI_CODING_AGENT_DIR/extensions/orca-prefill.ts" ]]; then
             echo "--no-orca should skip Orca extensions" >&2
             exit 1

@@ -11,7 +11,7 @@ Daily sync is **git**, not manual copying. Managed files are **symlinked** from 
 | `agent/config.yml` | `~/.omp/agent/config.yml` |
 | `agent/models.yml` | `~/.omp/agent/models.yml` |
 | `agent/mcp.json` | `~/.omp/agent/mcp.json` (default: no servers) |
-| `agent/mcp.notion.json` | Opt-in fragment merged by `scripts/omp-notion.sh` |
+| `agent/mcp.figma.json` | Opt-in fragment merged by `scripts/omp-figma.sh` |
 | `agent/extensions/*` | `~/.omp/agent/extensions/*` |
 | `agent/agents/*` (optional; `*.md` + dirs) | `~/.omp/agent/agents/*` |
 | `agent/skills/*` (omp-native; e.g. `impeccable`) | `~/.omp/agent/skills/*` |
@@ -73,7 +73,7 @@ Profiles:
 - `minimal` — config, models, and plugins; no extensions.
 - `orca` — same as full; named for the Orca-integrated environment.
 
-`--no-orca` keeps core extensions (currently `persistent-error-retry.ts`) but omits the three Orca bridge extensions.
+`--no-orca` keeps the core extension (`kie-gemini-compat.ts`) but omits the three Orca bridge extensions.
 
 ## Notion MCP (opt-in)
 
@@ -118,6 +118,23 @@ Docs accounts.` Composio replies with a short-lived OAuth link; approve it in
 the browser. Tokens stay with Composio and OMP's local credential store
 (`~/.omp/agent/`, gitignored) — never in this repo.
 
+
+## Figma MCP (opt-in)
+
+Launch OMP with Figma's remote MCP server enabled for that run:
+
+```bash
+./scripts/omp-figma.sh                 # interactive
+./scripts/omp-figma.sh -p "..."       # non-interactive
+```
+
+The wrapper stages a temporary agent directory and merges
+`agent/mcp.figma.json`; the default `agent/mcp.json` remains unchanged. On
+first use, complete Figma's OAuth flow in the browser. Credentials are handled
+by OMP and are never stored in this repo. You can ask OMP to implement a Figma
+frame in your app (`get_design_context`) or send a live web UI into Figma
+(`generate_figma_design`, subject to client/tool support). These are distinct
+workflows, not automatic two-way synchronization.
 ## Day-to-day workflow
 
 **This machine (symlinks):**
